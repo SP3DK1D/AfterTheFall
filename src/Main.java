@@ -1,5 +1,7 @@
 package src;
 
+import java.util.HashMap;
+
 public class Main {
  public static void main(String[] args){
     printMainTitle();
@@ -20,7 +22,7 @@ public class Main {
                                                         "");//ART by
         System.out.println("________________________________________________________________________________________________________________");
     }
-    public static void printMainStoryStart() {
+    public static void printMainStoryStart(HashMap<String, Room> rooms) {
         System.out.println();
         System.out.println("Ten years ago, the world was forever changed...");
         System.out.println();
@@ -35,5 +37,14 @@ public class Main {
         System.out.println("and they embark on a perilous journey to save humanity from the brink of extinction.");
         System.out.println();
         System.out.println("This is their story...");//Text by CHATGDP 4o
+
+        String name_ = "defaultRoomName";
+        String description_;
+        name_ = rooms.get(name_).getName();
+        description_ = rooms.get(name_).getDescription();
+        System.out.println(name_);
+          System.out.println(description_);
     }
-}
+    
+    }
+
