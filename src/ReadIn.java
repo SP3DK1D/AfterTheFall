@@ -1,50 +1,47 @@
 package src;
+import java.io.File;
+import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.util.HashMap;
-import java.io.IOException;
-import java.util.*;
 
 public class ReadIn {
-    public static HashMap<String, Room> createRooms() {
+    public static void createRooms() {
+        BufferedReader reader = new BufferedReader(new FileReader("Rooms.txt"));
+        String textLine = reader.readLine();
+        HashMap<String, Room> rooms = new HashMap<>();
 
-		BufferedReader reader = new BufferedReader(new FileReader("Rooms.txt"));
-        String line = reader.readLine();
-        HashMap<String, Room> rooms = new HashMap<String, Room>();
+        while (textLine != null) {
+            String[] roomInfo = textLine.split(",");
+            String roomName = textLine;
+            textLine = reader.readLine();
+            String[] roomNeighbors = textLine.split(",");
+           
+            for (int i = 0; i < roomNeighbors.length; i++) { // travers
+              
+                 // trim each name
+                   roomNeighbors[i] = roomNeighbors[i].trim();
+}
+            textLine = reader.readLine();
+            String roomDescription = textLine;
 
-        while (line != null) { // while we can still read from file
-            String name = line;
-
-            line = reader.readLine();
-
-            String[] neighbors = line.split(",");
-            for (int i = 0; i < neighbors.length; i++) { // travers
-                                                            // neighbors
-                // trim each name
-                neighbors[i] = neighbors[i].trim();
-            }
-
-            line = reader.readLine();
-            String description = "";
-
-            while (!line.equals("END")) { // while reader has not hit "END"
-                // add each line to overall string for description
-                description = description + line + '\n';
-                line = reader.readLine();
-            }
-
+            while (!textLine.equals("STOP")) { // while reader has not hit "STOP"
+					// add each line to overall string for description
+					roomDescription = roomDescription + textLine + '\n';
+					textLine = reader.readLine();
+				}
             // put new room object and rooms name in HashMap
-            rooms.put(name, new Room(name, description, neighbors, items));
-
-            line = reader.readLine(); // move line to beginning of next
-                                        // section of text
-                                        System.out.println(name);
-                                        System.out.println(description);
-                                        
+           
+            Room room = new Room(roomDescription, roomNeighbors, roomName);
+            rooms.put(roomName, room);
+            
         }
-}
-public String getName() {
-    return name_;
-}
+        
+        
+    }
+
+		
+
+
 }
 
