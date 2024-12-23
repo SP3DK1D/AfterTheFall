@@ -1,60 +1,52 @@
 package src;
 
-import java.util.HashMap;
+
+import java.util.List;
 import java.util.Map;
 
 public class Player {
-    public static String location; // players location at all times
-    private static Map<String, Room> rooms = new HashMap<>(); // map to hold locations and Room objects
-    
+    public static String location;
+    static Map<String, List<String>> neighbors;
+    List<String> roomNeighbors = neighbors.get(location);
     public Player() {
-    Player player = new Player(); 
-    Player.location = "prisonCell";//sets player starting location
+    Room room = new Room();
+    neighbors = room.getNeighbors();
+    location = "Prison cell";//sets the starting location of the player
     }
-     
-/** Movement
- * This function allows the player to move between rooms by entering south(s), north(n), east(e), or west(w)
- * and giving a "You can't go that way, try another way." message if the player tries to move in a direction that is not possible
- * @param direction
- */
-    public void Movement(String direction) {
-      direction = direction.toLowerCase();//sets the direction input to lower case to allow for differing inputs
-      Room current = rooms.get(location);//gets the current room
-      String[] temp = current.getNeighbors();//gives a connection between the directions and the rooms
-      
-       // if the player enters a valid direction it will move the player to the new location
-       if(direction.equals("north") || direction.equals("n")) {
-           if(!temp[0].equals("^")){
 
-           }
-           else{
+    public void Movement(String direction) {
+      direction = direction.toLowerCase();
+        if(direction.equals("north") || direction.equals("n")) {
+           if(neighbors.get(location) != null){
+               location = roomNeighbors.get(1);
+           } else {
                System.out.println("You can't go that way, try another way.");
            }
            
         } else if(direction.equals("south") || direction.equals("s")) {
-            if(!temp[1].equals("^")){
-                location = temp[1];
-            }
-            else{
+            if(neighbors.get(location) != null){
+                
+                location = roomNeighbors.get(0);
+            } else {
                 System.out.println("You can't go that way, try another way.");
             }
+            
         } else if(direction.equals("east") || direction.equals("e")) {
-            if(!temp[2].equals("^")){
-                location = temp[2];
-            }
-            else{
+            if(neighbors.get(location) != null){
+                location = roomNeighbors.get(2);
+            } else {
                 System.out.println("You can't go that way, try another way.");
             }
         } else if(direction.equals("west") || direction.equals("w")) {
-            if(!temp[3].equals("^")){
-                location = temp[3];
-            }
-            else{
+            if(neighbors.get(location) != null){
+                location = roomNeighbors.get(3);
+            } else {
                 System.out.println("You can't go that way, try another way.");
             }
-        } else { // if the player enters a direction that is not valid
-			System.out.println("Sorry, not valid direction, try again!");
-		}
         } 
     }
 }
+/* 
+* ADD A EAST WEST INDEX HASHMAP AS WELL AS A NORTH SOUTH INDEX HASHMAP
+*/
+ 
