@@ -1,48 +1,26 @@
 package src;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Scanner;
 
 /**
  * The Main class is the entry point of the game.
  * It initializes the game and starts the main story.
  */
 public class Main {
-    static Map<String, List<String>> neighbors;
-    static String location = Player.location;
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Room room = new Room();
-        neighbors = room.getNeighbors();
-
-        
-        printMainTitle();
         printMainStoryStart();
-        test(location);
-    }
 
-    /**
-     * Initializes the starting location of the player.
-     */
-    
+        Room startingRoom = new Room(); // Initialize with the starting room
+        Player player = new Player(startingRoom);
 
-    /**
-     * Prints the main title of the game.
-     */
-    public static void printMainTitle() {
-        System.out.println("________________________________________________________________________________________________________________");
-        System.out.println();
-        System.out.println(" ▄▄▄        █████▒▄▄▄█████▓▓█████  ██▀███        ▄▄▄█████▓ ██░ ██ ▓█████         █████▒▄▄▄       ██▓     ██▓    \r\n" + //
-                "▒████▄    ▓██   ▒ ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒      ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀       ▓██   ▒▒████▄    ▓██▒    ▓██▒    \r\n" + //
-                "▒██  ▀█▄  ▒████ ░ ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒      ▒ ▓██░ ▒░▒██▀▀██░▒███         ▒████ ░▒██  ▀█▄  ▒██░    ▒██░    \r\n" + //
-                "░██▄▄▄▄██ ░▓█▒  ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄        ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄       ░▓█▒  ░░██▄▄▄▄██ ▒██░    ▒██░    \r\n" + //
-                " ▓█   ▓██▒░▒█░      ▒██▒ ░ ░▒████▒░██▓ ▒██▒        ▒██▒ ░ ░▓█▒░██▓░▒████▒      ░▒█░    ▓█   ▓██▒░██████▒░██████▒\r\n" + //
-                " ▒▒   ▓▒█░ ▒ ░      ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░        ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░       ▒ ░    ▒▒   ▓▒█░░ ▒░▓  ░░ ▒░▓  ░\r\n" + //
-                "  ▒   ▒▒ ░ ░          ░     ░ ░  ░  ░▒ ░ ▒░          ░     ▒ ░▒░ ░ ░ ░  ░       ░       ▒   ▒▒ ░░ ░ ▒  ░░ ░ ▒  ░\r\n" + //
-                "  ░   ▒    ░ ░      ░         ░     ░░   ░         ░       ░  ░░ ░   ░          ░ ░     ░   ▒     ░ ░     ░ ░   \r\n" + //
-                "      ░  ░                    ░  ░   ░                     ░  ░  ░   ░  ░                   ░  ░    ░  ░    ░  ░\r" + //
-                "");//ART by
-        System.out.println("________________________________________________________________________________________________________________");
+        while (true) {
+            System.out.println("You are currently in the " + player.getLocation());
+            System.out.println("Which direction would you like to go? (North, South, East, West)");
+            String userChoice = scanner.nextLine();
+            player.move(userChoice);
+        }
     }
 
     /**
@@ -62,21 +40,6 @@ public class Main {
         System.out.println("But amidst the darkness, a glimmer of hope remains. A group of survivors has discovered a potential cure,");
         System.out.println("and they embark on a perilous journey to save humanity from the brink of extinction.");
         System.out.println();
-        System.out.println("This is their story...");//Text by CHATGDP 4o
-    }
-
-    /**
-     * Tests the neighbors of the given location.
-     * @param location The location to test.
-     */
-    public static void test(String location) {
-        List<String> roomNeighbors = neighbors.get(location);
-        if (roomNeighbors != null) {
-            // Access individual elements using get method
-            System.out.println(roomNeighbors.get(0)); // prints "hallway"
-            System.out.println(roomNeighbors.get(1)); // prints "courtyard"
-        } else {
-            System.out.println("No neighbors found for location: " + location);
-        }
+        System.out.println("This is their story...");
     }
 }

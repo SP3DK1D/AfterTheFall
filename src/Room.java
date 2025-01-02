@@ -3,15 +3,16 @@ package src;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The Room class represents a room in the game.
  * It contains descriptions of rooms and their neighboring rooms.
  */
 public class Room {
-    private HashMap<String, String> rooms;
-    private HashMap<String, List<String>> neighborNS;
-    private HashMap<String, List<String>> neighborWE;
+    private Map<String, String> rooms;
+    private Map<String, List<String>> neighborNS;
+    private Map<String, List<String>> neighborWE;
 
     /**
      * Constructor to initialize rooms and neighbors.
@@ -176,7 +177,7 @@ public class Room {
      * Returns the map of rooms and their descriptions.
      * @return HashMap of rooms and descriptions.
      */
-    public HashMap<String, String> getRooms() {
+    public Map<String, String> getRooms() {
         return rooms;
     }
 
@@ -184,11 +185,11 @@ public class Room {
      * Returns the map of rooms and their neighbors.
      * @return HashMap of rooms and neighbors.
      */
-    public HashMap<String, List<String>> getNeighborsNS() {
+    public Map<String, List<String>> getNeighborNS() {
         return neighborNS;
     }
 
-    public HashMap<String, List<String>> getNeighborsWE() {
+    public Map<String, List<String>> getNeighborWE() {
         return neighborWE;
     }
 }

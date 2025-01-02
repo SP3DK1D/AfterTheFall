@@ -1,52 +1,62 @@
 package src;
 
-
 import java.util.List;
 import java.util.Map;
 
 public class Player {
-    public static String location;
-    static Map<String, List<String>> neighbors;
-    List<String> roomNeighbors = neighbors.get(location);
-    public Player() {
-    Room room = new Room();
-    neighbors = room.getNeighbors();
-    location = "Prison cell";//sets the starting location of the player
+    private Room currentRoom;
+    private String location;
+
+    public Player(Room startingRoom) {
+        this.currentRoom = startingRoom;
+        this.location = "village prison cell"; // Starting location
     }
 
-    public void Movement(String direction) {
-      direction = direction.toLowerCase();
-        if(direction.equals("north") || direction.equals("n")) {
-           if(neighbors.get(location) != null){
-               location = roomNeighbors.get(1);
-           } else {
-               System.out.println("You can't go that way, try another way.");
-           }
-           
-        } else if(direction.equals("south") || direction.equals("s")) {
-            if(neighbors.get(location) != null){
-                
-                location = roomNeighbors.get(0);
-            } else {
-                System.out.println("You can't go that way, try another way.");
-            }
-            
-        } else if(direction.equals("east") || direction.equals("e")) {
-            if(neighbors.get(location) != null){
-                location = roomNeighbors.get(2);
-            } else {
-                System.out.println("You can't go that way, try another way.");
-            }
-        } else if(direction.equals("west") || direction.equals("w")) {
-            if(neighbors.get(location) != null){
-                location = roomNeighbors.get(3);
-            } else {
-                System.out.println("You can't go that way, try another way.");
-            }
-        } 
+    public void move(String direction) {
+        Map<String, List<String>> neighborNS = currentRoom.getNeighborNS();
+        Map<String, List<String>> neighborWE = currentRoom.getNeighborWE();
+
+        String nextRoom = null;
+        switch (direction.toLowerCase()) {
+            case "north":
+            case "n":
+            direction = "north";
+                nextRoom = neighborNS.get(location).get(0);
+                break;
+            case "south":
+            case "s":
+            direction = "south";
+                nextRoom = neighborNS.get(location).get(1);
+                break;
+            case "west":
+            case "w":
+            direction = "west";
+                nextRoom = neighborWE.get(location).get(0);
+                break;
+            case "east":
+            case "e":
+            direction = "east";
+                nextRoom = neighborWE.get(location).get(1);
+                break;
+            default:
+                System.out.println("Invalid direction");
+                return;
+        }
+
+        if (nextRoom.equals("STOP")) {
+            System.out.println("You can't go that way. Try again.");
+        } else {
+            location = nextRoom;
+            System.out.println("You move " + direction + " to " + location);
+            System.out.println(currentRoom.getRooms().get(location));
+        }
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public String getLocation() {
+        return location;
     }
 }
-/* 
-* ADD A EAST WEST INDEX HASHMAP AS WELL AS A NORTH SOUTH INDEX HASHMAP
-*/
- 
