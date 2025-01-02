@@ -1,49 +1,79 @@
 package src;
 
+import java.util.List;
+import java.util.Map;
+
+
 public class Player {
-    public static String location;//players location at all times
+    private Room currentRoom; // The current room the player is in (Is just an object of the Room class that is used to hold the information of the rooms)
+    private String location; // The current location of the player (Used to look at the rooms description from the current room)
+
     
-    public Player() {
-    Player player = new Player();//adds player object
-    Player.location = "prisonCell";//sets player starting location
+   
+    // The starting room for the player.
+    public Player(Room startingRoom) {
+        this.currentRoom = startingRoom;
+        this.location = "village prison cell"; // Starting location
     }
+
+    
+     // Moves the player in the specified direction the direction to move (north, south, east, west)
      
-/** Movement
- * This function allows the player to move between rooms by entering south(s), north(n), east(e), or west(w)
- * and giving a "You can't go that way, try another way." message if the player tries to move in a direction that is not possible
- * @param direction
- */
-    public void Movement(String direction) {
-      direction = direction.toLowerCase();//sets the direction input to lower case to allow for differing inputs
-        if(direction.equals("north") || direction.equals("n")) {
-           if(){
+    public void move(String direction) {
+        // Get the neighboring rooms in the north-south and west-east directions
+        Map<String, List<String>> neighborNS = currentRoom.getNeighborNS();
+        Map<String, List<String>> neighborWE = currentRoom.getNeighborWE();
+        //makes the nextRoom variable null(empty)
+        String nextRoom = null;
+        // Determine the next room based on the direction
+        switch (direction.toLowerCase()) {
+            case "north":
+            case "n":
+            direction = "north";
+                nextRoom = neighborNS.get(location).get(0);
+                break;
+            case "south":
+            case "s":
+            direction = "south";
+                nextRoom = neighborNS.get(location).get(1);
+                break;
+            case "west":
+            case "w":
+            direction = "west";
+                nextRoom = neighborWE.get(location).get(0);
+                break;
+            case "east":
+            case "e":
+            direction = "east";
+                nextRoom = neighborWE.get(location).get(1);
+                break;
+            default:
+                System.out.println("Invalid direction");
+                return;
+        }
 
-           }
-           else{
-               System.out.println("You can't go that way, try another way.");
-           }
-           
-        } else if(direction.equals("south") || direction.equals("s")) {
-            if(){
+        // Checks if there is a room in the specified direction
+        if (nextRoom.equals("STOP")) {
+            System.out.println("You can't go that way. Try again.");
+        } else {
+            // Update the player's location to the next room
+            location = nextRoom;
+            System.out.println("You move " + direction + " to " + location);
+            // Print the description of the new room
+            System.out.println(currentRoom.getRooms().get(location));
+        }
+    }
 
-            }
-            else{
-                System.out.println("You can't go that way, try another way.");
-            }
-        } else if(direction.equals("east") || direction.equals("e")) {
-            if(){
+    
+     // Returns the current room the player is in.
+     //currentRoom is used to get the rooms neighbors
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
 
-            }
-            else{
-                System.out.println("You can't go that way, try another way.");
-            }
-        } else if(direction.equals("west") || direction.equals("w")) {
-            if(){
-
-            }
-            else{
-                System.out.println("You can't go that way, try another way.");
-            }
-        } 
+    // Returns the current location of the player.
+    //location is used to look at the rooms description
+    public String getLocation() {
+        return location;
     }
 }
