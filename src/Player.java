@@ -3,20 +3,29 @@ package src;
 import java.util.List;
 import java.util.Map;
 
-public class Player {
-    private Room currentRoom;
-    private String location;
 
+public class Player {
+    private Room currentRoom; // The current room the player is in (Is just an object of the Room class that is used to hold the information of the rooms)
+    private String location; // The current location of the player (Used to look at the rooms description from the current room)
+
+    
+   
+    // The starting room for the player.
     public Player(Room startingRoom) {
         this.currentRoom = startingRoom;
         this.location = "village prison cell"; // Starting location
     }
 
+    
+     // Moves the player in the specified direction the direction to move (north, south, east, west)
+     
     public void move(String direction) {
+        // Get the neighboring rooms in the north-south and west-east directions
         Map<String, List<String>> neighborNS = currentRoom.getNeighborNS();
         Map<String, List<String>> neighborWE = currentRoom.getNeighborWE();
-
+        //makes the nextRoom variable null(empty)
         String nextRoom = null;
+        // Determine the next room based on the direction
         switch (direction.toLowerCase()) {
             case "north":
             case "n":
@@ -43,19 +52,27 @@ public class Player {
                 return;
         }
 
+        // Checks if there is a room in the specified direction
         if (nextRoom.equals("STOP")) {
             System.out.println("You can't go that way. Try again.");
         } else {
+            // Update the player's location to the next room
             location = nextRoom;
             System.out.println("You move " + direction + " to " + location);
+            // Print the description of the new room
             System.out.println(currentRoom.getRooms().get(location));
         }
     }
 
+    
+     // Returns the current room the player is in.
+     //currentRoom is used to get the rooms neighbors
     public Room getCurrentRoom() {
         return currentRoom;
     }
 
+    // Returns the current location of the player.
+    //location is used to look at the rooms description
     public String getLocation() {
         return location;
     }

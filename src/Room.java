@@ -5,18 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The Room class represents a room in the game.
- * It contains descriptions of rooms and their neighboring rooms.
- */
-public class Room {
-    private Map<String, String> rooms;
-    private Map<String, List<String>> neighborNS;
-    private Map<String, List<String>> neighborWE;
 
-    /**
-     * Constructor to initialize rooms and neighbors.
-     */
+public class Room {
+    private Map<String, String> rooms; // Map of room names to their descriptions
+    private Map<String, List<String>> neighborNS; // Map of room names to their north-south neighbors
+    private Map<String, List<String>> neighborWE; // Map of room names to their west-east neighbors
+
+    // creates rooms and their descriptions
     public Room() {
         rooms = new HashMap<>();
         neighborNS = new HashMap<>();
@@ -24,11 +19,7 @@ public class Room {
         createRooms();
     }
 
-    /**
-     * Initializes the rooms and their neighbors.
-     * Uses the room name as an index in a hash map to store the room description,
-     * and in a separate hash map to store the list of neighboring rooms.
-     */
+    // Creates the rooms and their descriptions and assigns North-South neighbors to each room as well as West-East neighbors.
     private void createRooms() {
         // Village prison cell
         rooms.put("village prison cell", "You wake up to the sound of footsteps outside your cell in the village prison.\n"
@@ -173,23 +164,18 @@ public class Room {
         neighborWE.put("military base", Arrays.asList("STOP", "STOP"));
     }
 
-    /**
-     * Returns the map of rooms and their descriptions.
-     * @return HashMap of rooms and descriptions.
-     */
+    // Returns the map of rooms and their descriptions.
     public Map<String, String> getRooms() {
         return rooms;
     }
 
-    /**
-     * Returns the map of rooms and their neighbors.
-     * @return HashMap of rooms and neighbors.
-     */
+    // Returns the map of rooms and their north-south neighbors.
     public Map<String, List<String>> getNeighborNS() {
         return neighborNS;
     }
-
+    // Returns the map of rooms and their west-east neighbors.
     public Map<String, List<String>> getNeighborWE() {
         return neighborWE;
     }
 }
+//STORY WAS WRITTEN BY CHATGDP 4o

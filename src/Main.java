@@ -2,33 +2,38 @@ package src;
 
 import java.util.Scanner;
 
-/**
- * The Main class is the entry point of the game.
- * It initializes the game and starts the main story.
- */
+
 public class Main {
+    // Scanner object to read user input
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        // Print the main story start
         printMainStoryStart();
 
-        Room startingRoom = new Room(); // Initialize with the starting room
+        // Initialize the starting room
+        Room startingRoom = new Room();
+        // Create a player and set the starting room
         Player player = new Player(startingRoom);
 
+        // Print the description of the starting room(fixes the bug with it not printing the description of the starting room-lukas)
+        System.out.println(player.getCurrentRoom().getRooms().get(player.getLocation()));
+
+        // Main game loop
         while (true) {
+            // Prints the updated loctaion after each move
             System.out.println("You are currently in the " + player.getLocation());
+            // Asks the player for input
             System.out.println("Which direction would you like to go? (North, South, East, West)");
+            // Read the player's input
             String userChoice = scanner.nextLine();
+            // Sends the userChoice to the Player.java file to move the player
             player.move(userChoice);
         }
     }
-  
-        
-    
 
-    /**
-     * Prints the main story start of the game.
-     */
+    
+     // Prints the main story start of the game and the starting title.
     public static void printMainStoryStart() {
 
         System.out.println("________________________________________________________________________________________________________________");
@@ -43,8 +48,10 @@ public class Main {
                         "  ░   ▒    ░ ░      ░         ░     ░░   ░         ░       ░  ░░ ░   ░          ░ ░     ░   ▒     ░ ░     ░ ░   \r\n" + //
                         "      ░  ░                    ░  ░   ░                     ░  ░  ░   ░  ░                   ░  ░    ░  ░    ░  ░\r"  //
                
-                );//ART by
+                );//ART by patorjk.com
         System.out.println("________________________________________________________________________________________________________________");
+        System.out.println();
+        System.out.println("After The Fall");
         System.out.println();
         System.out.println("Ten years ago, the world was forever changed...");
         System.out.println();
@@ -59,5 +66,6 @@ public class Main {
         System.out.println("and they embark on a perilous journey to save humanity from the brink of extinction.");
         System.out.println();
         System.out.println("This is their story...");
+        System.out.println();
     }
 }
