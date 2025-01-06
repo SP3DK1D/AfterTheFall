@@ -7,13 +7,15 @@ import java.util.Map;
 public class Player {
     private Room currentRoom; // The current room the player is in (Is just an object of the Room class that is used to hold the information of the rooms)
     private String location; // The current location of the player (Used to look at the rooms description from the current room)
+    private int health;
 
     
    
     // The starting room for the player.
-    public Player(Room startingRoom) {
+    public Player(Room startingRoom, int health) {
         this.currentRoom = startingRoom;
         this.location = "village prison cell"; // Starting location
+        this.health = health;
     }
 
     
@@ -75,5 +77,13 @@ public class Player {
     //location is used to look at the rooms description
     public String getLocation() {
         return location;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
     }
 }

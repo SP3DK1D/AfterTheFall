@@ -177,5 +177,10 @@ public class Room {
     public Map<String, List<String>> getNeighborWE() {
         return neighborWE;
     }
+
+    public boolean playerEntersNewRoom() {
+        // Logic to determine if the player enters a new room
+        return true; // Placeholder
+    }
 }
 //STORY WAS WRITTEN BY CHATGDP 4o
