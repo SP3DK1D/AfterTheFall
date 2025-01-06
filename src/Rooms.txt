@@ -1,9 +1,0 @@
-Prison cell
-Hallway,-,-,-
-You wake up to the sound of footsteps in your prison cell. You look around your cell to see the rusted bars on the window and peeling paint on the walls, revealing its many years of neglect. Dust settles on the floor, and the faint scent of mold lingers in the stagnant air as the footsteps approach your cell. Half awake, you hear the keys clank agaist your cell door, its a prison guard. "Get up" he says as he pulls you to the hallway to your north. Enter ' hallway ' , to continue. 
-STOP
-Hallway
--,courtyard,-,-
-"Get up," he says gruffly, pulling you to your feet with a forceful tug. The harsh light from the hallway stings your eyes as he shoves you forward, "walk" he declares, as he pushes you to your left. The hallways are even more neglected than the prison, the walls coverered in peeling paint, the smell of mold, and the distant sound of other prisoners peak your attention. Distracting you from the question, "where are we going?" you ask the guard. He says nothing, You reach a larger, fortified door at the end of the hall, and the guard stops, unlocking it with a series of heavy metallic clicks. As the door swings open, you’re greeted by the sharp scent of burnt earth and ozone. The guard pushes you forward, out into the open. You squint against the harsh sunlight, barely able to make out the horizon beyond the prison gates. Your in an open outdoor courtyard area youve never seen before. Enter ' courtyard ' , to continue
-STOP
-Courtyard
