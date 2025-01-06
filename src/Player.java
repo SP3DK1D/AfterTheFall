@@ -61,6 +61,7 @@ public class Player {
             // Update the player's location to the next room
             location = nextRoom;
             System.out.println("You move " + direction + " to " + location);
+            System.out.println();
             // Print the description of the new room
             System.out.println(currentRoom.getRooms().get(location));
         }
