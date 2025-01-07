@@ -22,7 +22,7 @@ public class Room {
 
     // Initialize rooms and neighbors
     private void createRooms() {
-        // Village prison cell
+        // Village prison celll
         rooms.put("village prison cell", "You wake up to the sound of footsteps outside your cell in the village prison.\n"
                 + "You look around to see the wooden bars on the window and the rough stone walls.\n"
                 + "Dust settles on the floor, and the faint scent of dampness lingers in the air.\n"
