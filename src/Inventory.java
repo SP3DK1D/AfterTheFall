@@ -1,142 +1,82 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.Scanner;
-
-class Item {
-    private String name;
-
-    public Item(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-}
-
-class Armor extends Item {
-    public Armor(String name) {
-        super(name);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-}
-
-class Weapon extends Item {
-    public Weapon(String name) {
-        super(name);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-}
+import java.util.List;
 
 public class Inventory {
-    private ArrayList<Item> items;
-    private Armor hat;
-    private Armor vest;
-    private Armor pants;
-    private Armor shoes;
-    private Weapon weapon;
+    private List<String> items; // List to store the items in the inventory
+    private String helmet; // Slot for the helmet
+    private String vest; // Slot for the vest
+    private String pants; // Slot for the pants
+    private String shoes; // Slot for the shoes
+    private String weapon; // Slot for the weapon
 
+    // Constructor to initialize the inventory
     public Inventory() {
         items = new ArrayList<>();
+        helmet = "None";
+        vest = "None";
+        pants = "None";
+        shoes = "None";
+        weapon = "None";
     }
 
-    public void findItem(Item item) {
+    // Adds an item to the inventory
+    public void addItem(String item) {
         items.add(item);
-        System.out.println("You found a " + item.getName() + "!");
+        System.out.println("** " + item + " has been added to your inventory.**");
     }
 
-    public void showItems() {
+    // Removes an item from the inventory
+    public void removeItem(String item) {
+        if (items.remove(item)) {
+            System.out.println("** " + item + " has been removed from your inventory.**");
+        } else {
+            System.out.println(item + " is not in your inventory.");
+        }
+    }
+
+    // Displays the items in the inventory
+    public void showInventory() {
+        System.out.println("Equipment:");
+        System.out.println("Helmet: " + helmet);
+        System.out.println("Vest: " + vest);
+        System.out.println("Pants: " + pants);
+        System.out.println("Shoes: " + shoes);
+        System.out.println("Weapon: " + weapon);
+        System.out.println();
         if (items.isEmpty()) {
             System.out.println("Your inventory is empty.");
         } else {
             System.out.println("Your inventory contains:");
-            for (Item item : items) {
+            for (String item : items) {
                 System.out.println("- " + item);
             }
         }
     }
 
-    public void equipItem(String itemName) {
-        for (Item item : items) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                if (item instanceof Armor) {
-                    Armor armor = (Armor) item;
-                    if (itemName.toLowerCase().contains("hat")) {
-                        hat = armor;
-                    } else if (itemName.toLowerCase().contains("vest")) {
-                        vest = armor;
-                    } else if (itemName.toLowerCase().contains("pants")) {
-                        pants = armor;
-                    } else if (itemName.toLowerCase().contains("shoes")) {
-                        shoes = armor;
-                    }
-                    System.out.println("You equipped " + itemName + ".");
-                } else if (item instanceof Weapon) {
-                    weapon = (Weapon) item;
-                    System.out.println("You equipped " + itemName + ".");
-                }
-                items.remove(item);
-                return;
-            }
-        }
-        System.out.println("Item not found in inventory.");
-    }
-
-    public void showEquippedItems() {
-        System.out.println("Equipped items:");
-        System.out.println("Hat: " + (hat != null ? hat : "None"));
-        System.out.println("Vest: " + (vest != null ? vest : "None"));
-        System.out.println("Pants: " + (pants != null ? pants : "None"));
-        System.out.println("Shoes: " + (shoes != null ? shoes : "None"));
-        System.out.println("Weapon: " + (weapon != null ? weapon : "None"));
-    }
-
-    public static void main(String[] args) {
-        Inventory inventory = new Inventory();
-        Scanner scanner = new Scanner(System.in);
-        String input;
-
-        System.out.println("Welcome to the game! Type 'i' to see your inventory, 'equip [item]' to equip an item, 'show equipped' to see equipped items, or 'exit' to quit.");
-
-        // Example items found in the game
-        inventory.findItem(new Armor("Steel Hat"));
-        inventory.findItem(new Armor("Kevlar Vest"));
-        inventory.findItem(new Armor("Combat Pants"));
-        inventory.findItem(new Armor("Running Shoes"));
-        inventory.findItem(new Weapon("Sword"));
-
-        while (true) {
-            System.out.print("> ");
-            input = scanner.nextLine();
-
-            if (input.equalsIgnoreCase("i")) {
-                inventory.showItems();
-            } else if (input.startsWith("equip ")) {
-                String itemName = input.substring(6);
-                inventory.equipItem(itemName);
-            } else if (input.equalsIgnoreCase("show equipped")) {
-                inventory.showEquippedItems();
-            } else if (input.equalsIgnoreCase("exit")) {
+    // Equips an item to the specified slot
+    public void equipItem(String slot, String item) {
+        switch (slot.toLowerCase()) {
+            case "helmet":
+                helmet = item;
                 break;
-            } else {
-                System.out.println("Invalid command. Type 'i' to see your inventory, 'equip [item]' to equip an item, 'show equipped' to see equipped items, or 'exit' to quit.");
-            }
+            case "vest":
+                vest = item;
+                break;
+            case "pants":
+                pants = item;
+                break;
+            case "shoes":
+                shoes = item;
+                break;
+            case "weapon":
+                weapon = item;
+                break;
+            default:
+                System.out.println("Invalid slot.");
+                return;
         }
-
-        scanner.close();
+        System.out.println(item + " has been equipped to your " + slot + ".");
     }
 }

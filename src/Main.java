@@ -2,55 +2,49 @@ package src;
 
 import java.util.Scanner;
 
-
 public class Main {
-    // Scanner object to read user input
-    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in); // Scanner to read user input
 
     public static void main(String[] args) {
-        // Print the main story start
-        printMainStoryStart();
+        printMainStoryStart(); // Print the main story start
 
-        // Initialize the starting room
-        Room startingRoom = new Room();
-        // Create a player and set the starting room
-        Player player = new Player(startingRoom);
+        Room startingRoom = new Room(); // Initialize the starting room
+        Player player = new Player(startingRoom); // Create a player and set the starting room
 
-        // Print the description of the starting room(fixes the bug with it not printing the description of the starting room-lukas)
-        System.out.println(player.getCurrentRoom().getRooms().get(player.getLocation()));
+        System.out.println(player.getCurrentRoom().getRooms().get(player.getLocation())); // Print the description of the starting room
 
         // Main game loop
         while (true) {
-            // Prints the updated loctaion after each move
-            System.out.println("You are currently in the " + player.getLocation());
-            // Asks the player for input
-            System.out.println("Which direction would you like to go? (North, South, East, West)");
-            // Read the player's input
-            String userChoice = scanner.nextLine();
-            // Sends the userChoice to the Player.java file to move the player
-            player.move(userChoice);
+            System.out.println("You are currently in the " + player.getLocation()); // Print the current location
+            System.out.println("Which direction would you like to go? (North, South, East, West) or type 'i' to view your inventory."); // Prompt the player for a direction or inventory command
+            String userChoice = scanner.nextLine().toLowerCase(); // Read the player's input
+
+            // Handle inventory commands
+            if (userChoice.equals("inventory") || userChoice.equals("i")) {
+                player.getInventory().showInventory();
+            } else if (userChoice.startsWith("add ")) {
+                String item = userChoice.substring(4);
+                player.getInventory().addItem(item);
+            } else if (userChoice.startsWith("remove ")) {
+                String item = userChoice.substring(7);
+                player.getInventory().removeItem(item);
+            } else if (userChoice.startsWith("equip ")) {
+                String[] parts = userChoice.split(" ", 3);
+                if (parts.length == 3) {
+                    String slot = parts[1];
+                    String item = parts[2];
+                    player.getInventory().equipItem(slot, item);
+                } else {
+                    System.out.println("Invalid equip command. Use 'equip <slot> <item>'.");
+                }
+            } else {
+                player.move(userChoice); // Move the player in the chosen direction
+            }
         }
     }
 
-    
-     // Prints the main story start of the game and the starting title.
+    // Prints the main story start of the game
     public static void printMainStoryStart() {
-
-        System.out.println("________________________________________________________________________________________________________________");
-        System.out.println();
-        System.out.println("▄▄▄        █████▒▄▄▄█████▓▓█████  ██▀███        ▄▄▄█████▓ ██░ ██ ▓█████         █████▒▄▄▄       ██▓     ██▓    \r\n" + //
-                        "▒████▄    ▓██   ▒ ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒      ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀       ▓██   ▒▒████▄    ▓██▒    ▓██▒    \r\n" + //
-                        "▒██  ▀█▄  ▒████ ░ ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒      ▒ ▓██░ ▒░▒██▀▀██░▒███         ▒████ ░▒██  ▀█▄  ▒██░    ▒██░    \r\n" + //
-                        "░██▄▄▄▄██ ░▓█▒  ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄        ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄       ░▓█▒  ░░██▄▄▄▄██ ▒██░    ▒██░    \r\n" + //
-                        " ▓█   ▓██▒░▒█░      ▒██▒ ░ ░▒████▒░██▓ ▒██▒        ▒██▒ ░ ░▓█▒░██▓░▒████▒      ░▒█░    ▓█   ▓██▒░██████▒░██████▒\r\n" + //
-                        " ▒▒   ▓▒█░ ▒ ░      ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░        ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░       ▒ ░    ▒▒   ▓▒█░░ ▒░▓  ░░ ▒░▓  ░\r\n" + //
-                        "  ▒   ▒▒ ░ ░          ░     ░ ░  ░  ░▒ ░ ▒░          ░     ▒ ░▒░ ░ ░ ░  ░       ░       ▒   ▒▒ ░░ ░ ▒  ░░ ░ ▒  ░\r\n" + //
-                        "  ░   ▒    ░ ░      ░         ░     ░░   ░         ░       ░  ░░ ░   ░          ░ ░     ░   ▒     ░ ░     ░ ░   \r\n" + //
-                        "      ░  ░                    ░  ░   ░                     ░  ░  ░   ░  ░                   ░  ░    ░  ░    ░  ░\r"  //
-               
-                );//ART by patorjk.com
-        System.out.println("________________________________________________________________________________________________________________");
-        System.out.println();
         System.out.println("After The Fall");
         System.out.println();
         System.out.println("Ten years ago, the world was forever changed...");
