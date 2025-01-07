@@ -12,7 +12,7 @@ public class Room {
     private Map<String, List<String>> roomItems; // Items in each room
     public Map<String, List<String>> roomEncounter; // Enemies in each room
         
-    }
+    
 
     // Constructor to initialize rooms and neighbors
     public Room() {
@@ -234,3 +234,4 @@ public class Room {
         return roomItems;
     }
 }
+//add a help command to show controlls
