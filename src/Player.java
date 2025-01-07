@@ -17,10 +17,10 @@ public class Player {
      * @param startingRoom The starting room for the player.
      */
     public Player(Room startingRoom) {
-        this.currentRoom = startingRoom;
-        this.location = "village prison cell"; // Starting location
-        this.inventory = new Inventory(); // Initialize the player's inventory
-        this.inventory.addItem("Starter Kit"); // Add a starter item to the inventory
+        currentRoom = startingRoom;
+        location = "village prison cell"; // Starting location
+        inventory = new Inventory(); // Initialize the player's inventory
+        
     }
 
     /**
@@ -51,10 +51,7 @@ public class Player {
             case "e":
                 nextRoom = neighborWE.get(location).get(1);
                 break;
-            case "inventory":
-            case "i":
-                inventory.showInventory();
-                return;
+           
             default:
                 System.out.println("Invalid direction");
                 return;

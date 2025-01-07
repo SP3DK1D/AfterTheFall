@@ -16,19 +16,16 @@ public class Main {
         // Main game loop
         while (true) {
             System.out.println("You are currently in the " + player.getLocation()); // Print the current location
-            System.out.println("Which direction would you like to go? (North, South, East, West) or type 'i' to view your inventory."); // Prompt the player for a direction or inventory command
+            System.out.println("Which direction would you like to go?"); // Prompt the player for a direction or inventory command
             String userChoice = scanner.nextLine().toLowerCase(); // Read the player's input
 
             // Handle inventory commands
             if (userChoice.equals("inventory") || userChoice.equals("i")) {
                 player.getInventory().showInventory();
-            } else if (userChoice.startsWith("add ")) {
-                String item = userChoice.substring(4);
-                player.getInventory().addItem(item);
-            } else if (userChoice.startsWith("remove ")) {
+            } else if (userChoice.startsWith("drop")|| userChoice.equals("d")) {
                 String item = userChoice.substring(7);
                 player.getInventory().removeItem(item);
-            } else if (userChoice.startsWith("equip ")) {
+            } else if (userChoice.startsWith("equip ")|| userChoice.equals("eq")) {
                 String[] parts = userChoice.split(" ", 3);
                 if (parts.length == 3) {
                     String slot = parts[1];
@@ -45,7 +42,29 @@ public class Main {
 
     // Prints the main story start of the game
     public static void printMainStoryStart() {
-        System.out.println("After The Fall");
+        System.out.println("________________________________________________________________________________________________________________");
+        System.out.println();
+        System.out.println("▄▄▄        █████▒▄▄▄█████▓▓█████  ██▀███        ▄▄▄█████▓ ██░ ██ ▓█████         █████▒▄▄▄       ██▓     ██▓    \r\n" + //
+                        "▒████▄    ▓██   ▒ ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒      ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀       ▓██   ▒▒████▄    ▓██▒    ▓██▒    \r\n" + //
+                        "▒██  ▀█▄  ▒████ ░ ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒      ▒ ▓██░ ▒░▒██▀▀██░▒███         ▒████ ░▒██  ▀█▄  ▒██░    ▒██░    \r\n" + //
+                        "░██▄▄▄▄██ ░▓█▒  ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄        ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄       ░▓█▒  ░░██▄▄▄▄██ ▒██░    ▒██░    \r\n" + //
+                        " ▓█   ▓██▒░▒█░      ▒██▒ ░ ░▒████▒░██▓ ▒██▒        ▒██▒ ░ ░▓█▒░██▓░▒████▒      ░▒█░    ▓█   ▓██▒░██████▒░██████▒\r\n" + //
+                        " ▒▒   ▓▒█░ ▒ ░      ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░        ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░       ▒ ░    ▒▒   ▓▒█░░ ▒░▓  ░░ ▒░▓  ░\r\n" + //
+                        "  ▒   ▒▒ ░ ░          ░     ░ ░  ░  ░▒ ░ ▒░          ░     ▒ ░▒░ ░ ░ ░  ░       ░       ▒   ▒▒ ░░ ░ ▒  ░░ ░ ▒  ░\r\n" + //
+                        "  ░   ▒    ░ ░      ░         ░     ░░   ░         ░       ░  ░░ ░   ░          ░ ░     ░   ▒     ░ ░     ░ ░   \r\n" + //
+                        "      ░  ░                    ░  ░   ░                     ░  ░  ░   ░  ░                   ░  ░    ░  ░    ░  ░\r"  //
+               
+                );//ART by patorjk.com
+        System.out.println("________________________________________________________________________________________________________________");
+        System.out.println();
+        System.out.println("--CONTROLS--");
+        System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
+        System.out.println("-To view your inventory, type 'inventory(i)'.-");
+        System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
+        System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
+        System.out.println("PRESS ENTER TO BEGIN");
+        scanner.nextLine(); //Wait for user to press enter
+    
         System.out.println();
         System.out.println("Ten years ago, the world was forever changed...");
         System.out.println();
@@ -60,6 +79,8 @@ public class Main {
         System.out.println("and they embark on a perilous journey to save humanity from the brink of extinction.");
         System.out.println();
         System.out.println("This is their story...");
+        System.out.println("PRESS ENTER TO CONTINUE");
+        scanner.nextLine(); //Wait for user to press enter
         System.out.println();
     }
 }
