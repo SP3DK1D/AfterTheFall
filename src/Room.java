@@ -99,8 +99,13 @@ public class Room {
                 + "The air is thin and cold, and the path is treacherous. To the north is the mountain cave, and to the east is a narrow ledge.");
         neighborNS.put("mountain trail", Arrays.asList("mountain cave", "abandoned cabin"));
         neighborWE.put("mountain trail", Arrays.asList("STOP", "narrow ledge"));
+<<<<<<< Updated upstream
         roomItems.put("mountain trail", Arrays.asList());
         roomEncounter.put("mountain trail", Arrays.asList());
+=======
+        roomItems.put("mountain trail", Arrays.asList("bandit short sword"));
+        roomEncounter.put("mountain trail", Arrays.asList("bandit"));
+>>>>>>> Stashed changes
 
         // Narrow ledge
         rooms.put("narrow ledge", "You carefully navigate a narrow ledge, with steep drops on either side.\n"
@@ -204,7 +209,11 @@ public class Room {
         neighborNS.put("guard post", Arrays.asList("STOP", "STOP"));
         neighborWE.put("guard post", Arrays.asList("quarantine zone", "STOP"));
         roomItems.put("guard post", Arrays.asList());
+<<<<<<< Updated upstream
         roomEncounter.put("guard post", Arrays.asList());
+=======
+        roomEncounter.put("guard post", Arrays.asList("bandit"));
+>>>>>>> Stashed changes
 
         // Military base
         rooms.put("military base", "You arrive at the military base, the final destination in your journey.\n"
