@@ -39,7 +39,7 @@ public class Room {
 
         // Village square
         rooms.put("village square", "**You find yourself in the village square, a bustling area with villagers going about their daily routines.**\n\n"
-                + "The village elder stands in the center, waiting for you. He explains that the village is in dire need of a cure for a mysterious illness,\n"
+                + "The village elder stands in the center, waiting for you.\n He explains that the village is in dire need of a cure for a mysterious illness,\n"
                 + "and you have been chosen to embark on this dangerous journey.\n" 
                 +"To the west is the village gate, and to the east is the supply hut.");
         neighborNS.put("village square", Arrays.asList("STOP", "village prison cell"));
@@ -48,31 +48,31 @@ public class Room {
         roomEncounter.put("village square", Arrays.asList());
 
         // Village gate
-        rooms.put("village gate", "You stand at the village gate, the entrance to the outside world. The gate is made of sturdy wood, and beyond it lies the unknown.\n"
-                + "The village elder hands you a map and some supplies. \"Good luck,\" he says. To the north is the forest path.");
+        rooms.put("village gate", "**You stand at the village gate, the entrance to the outside world. The gate is made of sturdy wood, and beyond it lies the unknown.**\n\n"
+                + "**The village elder hands you a map and some supplies.** \"Good luck,\" he says. \n **To the north is the forest path.**");
         neighborNS.put("village gate", Arrays.asList("forest path", "STOP"));
         neighborWE.put("village gate", Arrays.asList("STOP", "village square"));
         roomItems.put("village gate", Arrays.asList("Tatered Helmet", "Tatered Vest", "Tatered Pants", "Tatered Shoes", "Tatered Weapon"));
         roomEncounter.put("village gate", Arrays.asList());
 
         // Supply hut
-        rooms.put("supply hut", "The supply hut is filled with various items that might be useful on your journey.\n"
-                + "You see food, water, and basic medical supplies. To the west is the village square.");
+        rooms.put("supply hut", "**The supply hut is filled with various items that might be useful on your journey.**\n"
+                + "**You see food, water, and basic medical supplies. To the west is the village square.**");
         neighborNS.put("supply hut", Arrays.asList("STOP", "STOP"));
         neighborWE.put("supply hut", Arrays.asList("village square", "STOP"));
         roomItems.put("supply hut", Arrays.asList("Food", "Water", "Basic Medical Supplies"));
         roomEncounter.put("supply hut", Arrays.asList());
 
         // Forest path
-        rooms.put("forest path", "You walk along the forest path, surrounded by tall trees and the sounds of wildlife.\n"
-                + "The path is narrow and winding, and you must stay alert for any dangers. To the north is the abandoned cabin, and to the east is a hidden stream.");
+        rooms.put("forest path", "**You walk along the forest path, surrounded by tall trees and the sounds of wildlife.**\n"
+                + "**The path is narrow and winding, and you must stay alert for any dangers. To the north is the abandoned cabin, and to the east is a hidden stream.**");
         neighborNS.put("forest path", Arrays.asList("abandoned cabin", "village gate"));
         neighborWE.put("forest path", Arrays.asList("STOP", "hidden stream"));
         roomItems.put("forest path", Arrays.asList());
         roomEncounter.put("forest path", Arrays.asList( "Weak zombie"));
 
         // Hidden stream
-        rooms.put("hidden stream", "You find a hidden stream, its clear water flowing gently over smooth stones.\n"
+        rooms.put("hidden stream", "**You find a hidden stream, its clear water flowing gently over smooth stones.**\n"
                 + "The area is peaceful, a stark contrast to the chaos of the world beyond. To the west is the forest path.");
         neighborNS.put("hidden stream", Arrays.asList("STOP", "STOP"));
         neighborWE.put("hidden stream", Arrays.asList("forest path", "STOP"));
@@ -80,23 +80,23 @@ public class Room {
         roomEncounter.put("hidden stream", Arrays.asList());
 
         // Abandoned cabin
-        rooms.put("abandoned cabin", "You arrive at an abandoned cabin in the middle of the forest. The cabin is old and decrepit, but it might hold some useful items.\n"
-                + "To the north is the mountain trail, and to the west is a hidden grove.");
+        rooms.put("abandoned cabin", "**You arrive at an abandoned cabin in the middle of the forest. The cabin is old and decrepit, but it might hold some useful items.**\n"
+                + "**To the north is the mountain trail, and to the west is a hidden grove.**");
         neighborNS.put("abandoned cabin", Arrays.asList("mountain trail", "forest path"));
         neighborWE.put("abandoned cabin", Arrays.asList("hidden grove", "STOP"));
         roomItems.put("abandoned cabin", Arrays.asList("Basic Helmet", "Basic Vest", "Basic Pants", "Basic Shoes", "Basic Weapon"));
         roomEncounter.put("abandoned cabin", Arrays.asList("Zombie"));
 
         // Hidden grove
-        rooms.put("hidden grove", "You discover a hidden grove, a small clearing surrounded by tall trees.\n"
-                + "The grove is filled with wildflowers and the sound of birdsong. To the east is the abandoned cabin.");
+        rooms.put("hidden grove", "**You discover a hidden grove, a small clearing surrounded by tall trees.**\n"
+                + "**The grove is filled with wildflowers and the sound of birdsong. To the east is the abandoned cabin.**");
         neighborNS.put("hidden grove", Arrays.asList("STOP", "STOP"));
         neighborWE.put("hidden grove", Arrays.asList("STOP", "abandoned cabin"));
         roomItems.put("hidden grove", Arrays.asList());
         roomEncounter.put("hidden grove", Arrays.asList());
         // Mountain trail
-        rooms.put("mountain trail", "You follow the mountain trail, which leads you higher and higher into the mountains.\n"
-                + "The air is thin and cold, and the path is treacherous. To the north is the mountain cave, and to the east is a narrow ledge.");
+        rooms.put("mountain trail", "**You follow the mountain trail, which leads you higher and higher into the mountains.**\n"
+                + "**The air is thin and cold, and the path is treacherous. To the north is the mountain cave, and to the east is a narrow ledge.**");
         neighborNS.put("mountain trail", Arrays.asList("mountain cave", "abandoned cabin"));
         neighborWE.put("mountain trail", Arrays.asList("STOP", "narrow ledge"));
 <<<<<<< Updated upstream
