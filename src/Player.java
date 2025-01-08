@@ -11,7 +11,6 @@ public class Player {
     private Room currentRoom; // The current room object containing all room data
     private String location; // The current location of the player as a string
     private Inventory inventory; // The player's inventory
-    private Combat combat; // The combat system
 
     /**
      * Constructor to initialize the player with a starting room.
@@ -21,7 +20,7 @@ public class Player {
         currentRoom = startingRoom;
         location = "village prison cell"; // Starting location
         inventory = new Inventory(); // Initialize the player's inventory
-        combat = new Combat(); // Initialize the combat system
+        
     }
 
     /**
@@ -73,13 +72,6 @@ public class Player {
                 List<String> items = currentRoom.getRoomItems().get(location);
                 for (String item : items) {
                     inventory.addItem(item);
-                }
-            }
-
-            if (location.equals("forest path")) {
-                List<String> encounters = currentRoom.getEncounters().get(location);
-                for (String encounters : encounters) {
-                    combat.combatPVE(encounters);
                 }
             }
         }

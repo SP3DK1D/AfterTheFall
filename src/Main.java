@@ -1,5 +1,6 @@
 package src;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -8,8 +9,10 @@ public class Main {
     public static void main(String[] args) {
         printMainStoryStart(); // Print the main story start
 
+        Room room = new Room(); // Initialize the rooms
         Room startingRoom = new Room(); // Initialize the starting room
         Player player = new Player(startingRoom); // Create a player and set the starting room
+        Combat combat = new Combat(); // Create a combat instance
 
         System.out.println(player.getCurrentRoom().getRooms().get(player.getLocation())); // Print the description of the starting room
 
@@ -27,14 +30,33 @@ public class Main {
                 player.getInventory().removeItem(item);
             } else if (userChoice.startsWith("equip ")|| userChoice.equals("eq")) {
                 String[] parts = userChoice.split(" ", 3);
-                if (parts.length == 3) {
+                if (parts.length == 3) {// splits equip command into parts to enter it into the equipItem method
                     String slot = parts[1];
                     String item = parts[2];
                     player.getInventory().equipItem(slot, item);
-                } else {
-                    System.out.println("Invalid equip command. Use 'equip <slot> <item>'.");
+                    } else {
+                        System.out.println("Invalid equip command. Use 'equip <slot> <item>'.");
+                    }
+                } else if(userChoice.equals("controls") || userChoice.equals("c")) {
+                    System.out.println("--CONTROLS--");
+                    System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
+                    System.out.println("-To view your inventory, type 'inventory(i)'.-");
+                    System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
+                    System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
+                    System.out.println("-To view the controls, type 'controls(c)'.-");
+                    System.out.println();
                 }
-            } else {
+                 player.move(userChoice);
+                String currentRoom = player.getLocation();
+                if (room.getRooms().containsKey(currentRoom)) {
+                    room.enterRoom(currentRoom, player.getInventory());
+                    List<String> encounters = room.getEncountersInRoom(currentRoom);
+                    for (String encounter : encounters) {
+                        int enemyHealth = 20; // Example health
+                        int enemyDamage = 5; // Example damage
+                        combat.engageCombat(player, encounter, enemyHealth, enemyDamage);
+                    }
+             else {
                 player.move(userChoice); // Move the player in the chosen direction
             }
         }

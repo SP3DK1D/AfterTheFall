@@ -214,24 +214,48 @@ public class Room {
         roomEncounter.put("military base", Arrays.asList("Final boss Zombie"));
     }
 
-    // Get room descriptions
-    public Map<String, String> getRooms() {
+   // Returns the map of rooms and their descriptions.
+   public Map<String, String> getRooms() {
         return rooms;
     }
 
-    // Get north-south neighbors
+    // Returns the map of rooms and their north-south neighbors.
     public Map<String, List<String>> getNeighborNS() {
         return neighborNS;
     }
 
-    // Get west-east neighbors
+    // Returns the map of rooms and their west-east neighbors.
     public Map<String, List<String>> getNeighborWE() {
         return neighborWE;
     }
 
-    // Get room items
-    public Map<String, List<String>> getRoomItems() {
-        return roomItems;
+    // Returns the item in the specified room, if any.
+    public List<String> getItemsInRoom(String roomName) {
+        return roomItems.getOrDefault(roomName, Arrays.asList());
     }
+
+    // Returns the encounters in the specified room, if any.
+    public List<String> getEncountersInRoom(String roomName) {
+        return roomEncounter.getOrDefault(roomName, Arrays.asList());
+    }
+
+     // Method to enter a room and get the item if it exists.
+     public void enterRoom(String roomName, Inventory inventory) {
+        System.out.println(rooms.get(roomName));
+        List<String> items = getItemsInRoom(roomName);
+        if (!items.isEmpty()) {
+            for (String item : items) {
+                inventory.findItem(new Item(item));
+                roomItems.get(roomName).remove(item); // Remove the item to prevent duplicates
+            }
+        }
+        List<String> encounters = getEncountersInRoom(roomName);
+        if (!encounters.isEmpty()) {
+            for (String encounter : encounters) {
+                System.out.println("An enemy appears: " + encounter);
+            }
+        }
+    }
+}
 }
 //add a help command to show controlls
