@@ -27,20 +27,21 @@ public class Room {
     // Initialize rooms and neighbors
     private void createRooms() {
         // Village prison cell
-        rooms.put("village prison cell", "You wake up to the sound of footsteps outside your cell in the village prison.\n"
-                + "You look around to see the wooden bars on the window and the rough stone walls.\n"
-                + "Dust settles on the floor, and the faint scent of dampness lingers in the air.\n"
-                + "A village guard approaches your cell. \"Get up,\" he says, \"The village elder wants to see you.\"\n"
-                + "He leads you to the village square to the north.");
+        rooms.put("village prison cell", "**You wake up to the sound of footsteps outside your cell in the village prison.**\n"
+                + "**You look around to see the wooden bars on the window and the rough stone walls.**\n"
+                + "**Dust settles on the floor, and the faint scent of dampness lingers in the air.**\n\n"
+                + "A village guard approaches your cell. \"Get up,\" he says, \"The village elder wants to see you.\"\n\n"
+                + "**He leads you to the village square to the north.**");
         neighborNS.put("village prison cell", Arrays.asList("village square", "STOP"));
         neighborWE.put("village prison cell", Arrays.asList("STOP", "STOP"));
         roomItems.put("village prison cell", Arrays.asList());
         roomEncounter.put("village prison cell", Arrays.asList());
 
         // Village square
-        rooms.put("village square", "You find yourself in the village square, a bustling area with villagers going about their daily routines.\n"
+        rooms.put("village square", "**You find yourself in the village square, a bustling area with villagers going about their daily routines.**\n\n"
                 + "The village elder stands in the center, waiting for you. He explains that the village is in dire need of a cure for a mysterious illness,\n"
-                + "and you have been chosen to embark on this dangerous journey. To the west is the village gate, and to the east is the supply hut.");
+                + "and you have been chosen to embark on this dangerous journey.\n" 
+                +"To the west is the village gate, and to the east is the supply hut.");
         neighborNS.put("village square", Arrays.asList("STOP", "village prison cell"));
         neighborWE.put("village square", Arrays.asList("village gate", "supply hut"));
         roomItems.put("village square", Arrays.asList());

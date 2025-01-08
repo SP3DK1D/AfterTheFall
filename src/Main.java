@@ -27,14 +27,23 @@ public class Main {
                 player.getInventory().removeItem(item);
             } else if (userChoice.startsWith("equip ")|| userChoice.equals("eq")) {
                 String[] parts = userChoice.split(" ", 3);
-                if (parts.length == 3) {
+                if (parts.length == 3) {// splits equip command into parts to enter it into the equipItem method
                     String slot = parts[1];
                     String item = parts[2];
                     player.getInventory().equipItem(slot, item);
-                } else {
-                    System.out.println("Invalid equip command. Use 'equip <slot> <item>'.");
+                    } else {
+                        System.out.println("Invalid equip command. Use 'equip <slot> <item>'.");
+                    }
+                } else if(userChoice.equals("controls") || userChoice.equals("c")) {
+                    System.out.println("--CONTROLS--");
+                    System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
+                    System.out.println("-To view your inventory, type 'inventory(i)'.-");
+                    System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
+                    System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
+                    System.out.println("-To view the controls, type 'controls(c)'.-");
+                    System.out.println();
                 }
-            } else {
+             else {
                 player.move(userChoice); // Move the player in the chosen direction
             }
         }
