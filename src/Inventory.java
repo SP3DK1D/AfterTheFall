@@ -10,6 +10,12 @@ public class Inventory {
     private String pants; // Slot for the pants
     private String shoes; // Slot for the shoes
     private String weapon; // Slot for the weapon
+    public List<String> items; // List to store the items in the inventory
+    public String helmet; // Slot for the helmet
+    public String vest; // Slot for the vest
+    public String pants; // Slot for the pants
+    public String shoes; // Slot for the shoes
+    public String weapon; // Slot for the weapon
 
     // Constructor to initialize the inventory
     public Inventory() {

@@ -8,9 +8,16 @@ import java.util.Map;
  * It handles the player's current location, movement, and inventory.
  */
 public class Player {
+<<<<<<< HEAD
     private Room currentRoom; // The current room object containing all room data
     private String location; // The current location of the player as a string
     private Inventory inventory; // The player's inventory
+=======
+    public Room currentRoom; // The current room object containing all room data
+    public String location; // The current location of the player as a string
+    public Inventory inventory; // The player's inventory
+    public Combat combat; // The combat system
+>>>>>>> 90ab059471db7a1a14f5a68dae241e01c0ec608b
 
     /**
      * Constructor to initialize the player with a starting room.
