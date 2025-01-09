@@ -37,18 +37,22 @@ public class Player {
         switch (direction.toLowerCase()) {
             case "north":
             case "n":
+            direction = "north";
                 nextRoom = neighborNS.get(location).get(0);
                 break;
             case "south":
             case "s":
+            direction = "south";
                 nextRoom = neighborNS.get(location).get(1);
                 break;
             case "west":
             case "w":
+            direction = "west";
                 nextRoom = neighborWE.get(location).get(0);
                 break;
             case "east":
             case "e":
+            direction = "east";
                 nextRoom = neighborWE.get(location).get(1);
                 break;
            
