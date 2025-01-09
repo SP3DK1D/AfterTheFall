@@ -11,6 +11,9 @@ public class Player {
     private Room currentRoom; // The current room object containing all room data
     private String location; // The current location of the player as a string
     private Inventory inventory; // The player's inventory
+    private int health;
+    private int damage;
+    private int currentRoomIndex;
 
     /**
      * Constructor to initialize the player with a starting room.
@@ -20,7 +23,9 @@ public class Player {
         currentRoom = startingRoom;
         location = "village prison cell"; // Starting location
         inventory = new Inventory(); // Initialize the player's inventory
-        
+        this.health = 100;
+        this.damage = 10;
+        this.currentRoomIndex = 0;
     }
 
     /**
@@ -103,5 +108,23 @@ public class Player {
      */
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void advanceRoom() {
+        currentRoomIndex++;
+        System.out.println("Advanced to room " + currentRoomIndex);
+    }
+
+    public void retreatRoom() {
+        currentRoomIndex = Math.max(0, currentRoomIndex - 3);
+        System.out.println("Retreated to room " + currentRoomIndex);
     }
 }

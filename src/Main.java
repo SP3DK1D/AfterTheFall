@@ -1,6 +1,7 @@
 package src;
-
+import src.Combat;
 import java.util.Scanner;
+
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in); // Scanner to read user input
@@ -12,6 +13,9 @@ public class Main {
         Player player = new Player(startingRoom); // Create a player and set the starting room
 
         System.out.println(player.getCurrentRoom().getRooms().get(player.getLocation())); // Print the description of the starting room
+        
+        Combat combat = new Combat();
+        combat.encounterData();
 
         // Main game loop
         while (true) {
@@ -45,6 +49,14 @@ public class Main {
                 }
              else {
                 player.move(userChoice); // Move the player in the chosen direction
+            }
+
+            if (combat.checkRoomEncounter(player.getLocation())) {
+                System.out.println("Encounter found: " + player.getLocation());
+                combat.fightEncounter(player.getLocation(), player);
+            } else {
+                System.out.println("No encounter in this room. Moving to the next room.");
+                player.advanceRoom();
             }
         }
     }
