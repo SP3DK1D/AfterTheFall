@@ -124,7 +124,6 @@ public class Room {
 
         // Mountain cave
         rooms.put("mountain cave", "**You enter the mountain cave, a dark and eerie place. The cave is filled with strange rock formations and the sound of dripping water.**\n"
-                + "**Deep inside the cave, you find a hidden lab where the cure is being developed.**\n\n"
                 + "**To the north is the mountain pass.**");
         neighborNS.put("mountain cave", Arrays.asList("mountain pass", "mountain trail"));
         neighborWE.put("mountain cave", Arrays.asList("STOP", "STOP"));
