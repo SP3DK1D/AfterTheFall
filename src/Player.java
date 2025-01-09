@@ -42,25 +42,20 @@ public class Player {
         switch (direction.toLowerCase()) {
             case "north":
             case "n":
-            direction = "north";
                 nextRoom = neighborNS.get(location).get(0);
                 break;
             case "south":
             case "s":
-            direction = "south";
                 nextRoom = neighborNS.get(location).get(1);
                 break;
             case "west":
             case "w":
-            direction = "west";
                 nextRoom = neighborWE.get(location).get(0);
                 break;
             case "east":
             case "e":
-            direction = "east";
                 nextRoom = neighborWE.get(location).get(1);
                 break;
-           
             default:
                 System.out.println("Invalid direction");
                 return;
@@ -114,13 +109,17 @@ public class Player {
         return health;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public int getDamage() {
         return damage;
     }
 
     public void advanceRoom() {
         currentRoomIndex++;
-        System.out.println("Advanced to room " + currentRoomIndex);
+        System.out.println("Advanced to room " + currentRoomIndex + " (dev note ignore)");
     }
 
     public void retreatRoom() {

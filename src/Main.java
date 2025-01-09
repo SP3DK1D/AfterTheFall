@@ -1,6 +1,7 @@
 package src;
-import src.Combat;
+import java.util.List;
 import java.util.Scanner;
+
 
 
 public class Main {
@@ -8,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         printMainStoryStart(); // Print the main story start
-
+        
         Room startingRoom = new Room(); // Initialize the starting room
         Player player = new Player(startingRoom); // Create a player and set the starting room
 
@@ -23,6 +24,22 @@ public class Main {
             System.out.println("Which direction would you like to go?"); // Prompt the player for a direction or inventory command
             String userChoice = scanner.nextLine().toLowerCase(); // Read the player's input
 
+             // Check for encounters in the current room
+            List<String> encounters = player.getCurrentRoom().getRoomEncounter().get(player.getLocation());
+            if (encounters != null && !encounters.isEmpty()) {
+                for (String encounter : encounters) {
+                    System.out.println("Encounter found: " + encounter);
+                    combat.fightEncounter(encounter, player);
+                }
+            }
+
+            // Handle movement commands
+            if (userChoice.equals("north") || userChoice.equals("n") ||
+            userChoice.equals("south") || userChoice.equals("s") ||
+            userChoice.equals("west") || userChoice.equals("w") ||
+            userChoice.equals("east") || userChoice.equals("e")) {
+            player.move(userChoice);
+        }
             // Handle inventory commands
             if (userChoice.equals("inventory") || userChoice.equals("i")) {
                 player.getInventory().showInventory();
@@ -52,10 +69,10 @@ public class Main {
             }
 
             if (combat.checkRoomEncounter(player.getLocation())) {
-                System.out.println("Encounter found: " + player.getLocation());
+                System.out.println("Encounter found: " + player.getLocation() +" (dev note ignore)");
                 combat.fightEncounter(player.getLocation(), player);
             } else {
-                System.out.println("No encounter in this room. Moving to the next room.");
+                System.out.println("No encounter in this room. Moving to the next room.(dev note ignore)");
                 player.advanceRoom();
             }
         }

@@ -69,7 +69,7 @@ public class Room {
         neighborNS.put("forest path", Arrays.asList("abandoned cabin", "village gate"));
         neighborWE.put("forest path", Arrays.asList("STOP", "hidden stream"));
         roomItems.put("forest path", Arrays.asList());
-        roomEncounter.put("forest path", Arrays.asList( "Weak zombie"));
+        roomEncounter.put("forest path", Arrays.asList( "zombie"));
 
         // Hidden stream
         rooms.put("hidden stream", "**You find a hidden stream, its clear water flowing gently over smooth stones.**\n"
@@ -85,7 +85,7 @@ public class Room {
         neighborNS.put("abandoned cabin", Arrays.asList("mountain trail", "forest path"));
         neighborWE.put("abandoned cabin", Arrays.asList("hidden grove", "STOP"));
         roomItems.put("abandoned cabin", Arrays.asList("Basic Helmet", "Basic Vest", "Basic Pants", "Basic Shoes", "Basic Weapon"));
-        roomEncounter.put("abandoned cabin", Arrays.asList("Zombie"));
+        roomEncounter.put("abandoned cabin", Arrays.asList("zombie"));
 
         // Hidden grove
         rooms.put("hidden grove", "**You discover a hidden grove, a small clearing surrounded by tall trees.**\n"
@@ -138,7 +138,7 @@ public class Room {
         neighborNS.put("mountain pass", Arrays.asList("city outskirts", "mountain cave"));
         neighborWE.put("mountain pass", Arrays.asList("STOP", "STOP"));
         roomItems.put("mountain pass", Arrays.asList());
-        roomEncounter.put("mountain pass", Arrays.asList("Zombie"));
+        roomEncounter.put("mountain pass", Arrays.asList("zombie"));
 
         // City outskirts
         rooms.put("city outskirts", "**You reach the outskirts of a once-thriving city, now overrun by zombies.**\n"
@@ -258,6 +258,10 @@ public class Room {
     // Get room items
     public Map<String, List<String>> getRoomItems() {
         return roomItems;
+    }
+
+    public Map<String, List<String>> getRoomEncounter() {
+        return roomEncounter;
     }
 }
 //add a help command to show controlls

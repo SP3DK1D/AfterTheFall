@@ -43,47 +43,86 @@ public class Combat {
     }
 
     public void fightEncounter(String encounter, Player player) {
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        int encounterHP = encounterHealth.get(encounter);
-        int playerHP = player.getHealth();
+        try (Scanner scanner = new Scanner(System.in)) {
+            Random random = new Random();
+            int encounterHP = encounterHealth.get(encounter);
+            int playerHP = player.getHealth();
 
-        while (encounterHP > 0 && playerHP > 0) {
-            System.out.println("Choose your action: attack or block");
-            String action = scanner.nextLine();
+            while (encounterHP > 0 && playerHP > 0) {
+                System.out.println("Choose your action: attack or block");
+                String action = scanner.nextLine();
 
-            if (action.equalsIgnoreCase("attack")) {
-                if (random.nextBoolean()) {
-                    encounterHP -= player.getDamage();
-                    System.out.println("Attack successful! " + encounter + " HP: " + encounterHP);
-                } else {
-                    System.out.println("Attack missed!");
+                if (action.equalsIgnoreCase("attack")) {
+                    if (random.nextBoolean()) {
+                        encounterHP -= player.getDamage();
+                        System.out.println("Attack successful! " + encounter + " HP: " + encounterHP);
+                    } else {
+                        System.out.println("Attack missed!");
+                    }
+                } else if (action.equalsIgnoreCase("block")) {
+                    if (random.nextBoolean()) {
+                        System.out.println("Block successful! No damage taken.");
+                    } else {
+                        playerHP -= encounterDamage.get(encounter);
+                        System.out.println("Block failed! Player HP: " + playerHP);
+                    }
                 }
-            } else if (action.equalsIgnoreCase("block")) {
-                if (random.nextBoolean()) {
-                    System.out.println("Block successful! No damage taken.");
-                } else {
-                    playerHP -= encounterDamage.get(encounter);
-                    System.out.println("Block failed! Player HP: " + playerHP);
+
+                if (encounterHP > 0) {
+                    if (random.nextBoolean()) {
+                        playerHP -= encounterDamage.get(encounter);
+                        System.out.println(encounter + " attacks! Player HP: " + playerHP);
+                    } else {
+                        System.out.println(encounter + " missed!");
+                    }
                 }
             }
 
-            if (encounterHP > 0) {
-                if (random.nextBoolean()) {
-                    playerHP -= encounterDamage.get(encounter);
-                    System.out.println(encounter + " attacks! Player HP: " + playerHP);
-                } else {
-                    System.out.println(encounter + " missed!");
-                }
+            if (playerHP > 0) {
+                System.out.println("You defeated the " + encounter + "!");
+                player.advanceRoom();
+            } else {
+                System.out.println("You were defeated by the " + encounter + "!");
+                player.retreatRoom();
             }
         }
+    }
+   
+}
 
-        if (playerHP > 0) {
-            System.out.println("You defeated the " + encounter + "!");
-            player.advanceRoom();
-        } else {
-            System.out.println("You were defeated by the " + encounter + "!");
-            player.retreatRoom();
-        }
+package src;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Room {
+    private Map<String, String> rooms; // Room descriptions
+    private Map<String, List<String>> neighborNS; // North-South neighbors
+    private Map<String, List<String>> neighborWE; // West-East neighbors
+    private Map<String, List<String>> roomItems; // Items in each room
+    public Map<String, List<String>> roomEncounter; // Enemies in each room
+
+    // Constructor to initialize rooms and neighbors
+    public Room() {
+        rooms = new HashMap<>();
+        neighborNS = new HashMap<>();
+        neighborWE = new HashMap<>();
+        roomItems = new HashMap<>();
+        roomEncounter = new HashMap<>();
+
+        // Example room initialization
+        rooms.put("forest path", "You are on a forest path. The trees are dense and the path is narrow.");
+        roomEncounter.put("forest path", Arrays.asList("zombie"));
+        // Add more rooms and encounters as needed
+    }
+
+    public Map<String, String> getRooms() {
+        return rooms;
+    }
+
+    public Map<String, List<String>> getRoomEncounter() {
+        return roomEncounter;
     }
 }
