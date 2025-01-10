@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Player {
-    public String location;
-    public Room currentRoom;
-    public Combat combat;
-    public Inventory inventory;
+    private String location;
+    private Inventory inventory;
+    private Combat combat;
+    private Room currentRoom;
 
     public Player(Room currentRoom) {
         this.currentRoom = currentRoom;
@@ -70,13 +70,8 @@ public class Player {
             }
         }
 
-        // Check if the player has reached the village gate and give basic items
-        if (location.equals("village gate")) {
-            List<String> items = currentRoom.getItems().get(location);
-            for (String item : items) {
-                inventory.addItem(item);
-            }
-        }
+        // Add items from the current room to the player's inventory
+        addItemsFromCurrentRoom();
 
         // Check if the player has reached the bad ending and reset location
         if (location.equals("bad ending")) {
@@ -97,5 +92,31 @@ public class Player {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    // Method to handle equip command
+    public void handleEquipCommand(String command) {
+        String[] parts = command.split(" ", 2);
+        if (parts.length < 2) {
+            System.out.println("Invalid command. Usage: equip <item name>");
+            return;
+        }
+
+        String itemName = parts[1].trim();
+        if (inventory.getItems().contains(itemName)) {
+            inventory.equipItemByName(itemName);
+        } else {
+            System.out.println("Item not found in inventory.");
+        }
+    }
+
+    // Add items from the current room to the player's inventory
+    public void addItemsFromCurrentRoom() {
+        List<String> items = currentRoom.getItems().get(location);
+        if (items != null) {
+            for (String item : items) {
+                inventory.addItem(item);
+            }
+        }
     }
 }

@@ -29,23 +29,16 @@ public class Main {
             if (userChoice.equals("inventory") || userChoice.equals("i")) {
                 player.getInventory().showInventory();
             } else if (userChoice.startsWith("drop") || userChoice.equals("d")) {
-                String item = userChoice.substring(7);
+                String item = userChoice.substring(5).trim();
                 player.getInventory().removeItem(item);
-            } else if (userChoice.startsWith("equip ") || userChoice.equals("eq")) {
-                String[] parts = userChoice.split(" ", 3);
-                if (parts.length == 3) {
-                    String slot = parts[1];
-                    String item = parts[2];
-                    player.getInventory().equipItem(slot, item);
-                } else {
-                    System.out.println("Invalid equip command. Use 'equip <slot> <item>'.");
-                }
+            } else if (userChoice.startsWith("equip ") || userChoice.startsWith("eq ")) {
+                player.handleEquipCommand(userChoice);
             } else if (userChoice.equals("controls") || userChoice.equals("c")) {
                 System.out.println("--CONTROLS--");
                 System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
                 System.out.println("-To view your inventory, type 'inventory(i)'.-");
                 System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
-                System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
+                System.out.println("-To equip an item, type 'equip(eq) <item>'.-");
                 System.out.println("-To attack, type 'a', To block type 'b'-");
                 System.out.println("-To view the controls, type 'controls(c)'.-");
                 System.out.println();
@@ -98,4 +91,4 @@ public class Main {
         System.out.println();
     }
 }
-//COMBAT WAS INSPIRED AND ASSISTED BY CHATGDP 
+//COMBAT WAS INSPIRED AND ASSISTED BY CHATGDP
