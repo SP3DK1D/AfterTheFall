@@ -2,7 +2,6 @@ package src;
 
 import java.util.Scanner;
 
-
 public class Main {
     // Scanner object to read user input
     public static Scanner scanner = new Scanner(System.in);
@@ -11,66 +10,65 @@ public class Main {
         // Print the main story start
         printMainStoryStart();
 
-        // Initialize the starting room
+        // Create a starting room
         Room startingRoom = new Room();
         // Create a player and set the starting room
         Player player = new Player(startingRoom);
 
-        // Print the description of the starting room(fixes the bug with it not printing the description of the starting room-lukas)
+        // Print the description of the starting room
         System.out.println(player.getCurrentRoom().getRooms().get(player.getLocation()));
 
         // Main game loop
         while (true) {
-            System.out.println("You are currently in the " + player.getLocation()); // Print the current location
-            System.out.println("Which direction would you like to go?"); // Prompt the player for a direction or inventory command
-            String userChoice = scanner.nextLine().toLowerCase(); // Read the player's input
+            System.out.println();
+            System.out.println("You are currently in the " + player.getLocation());
+            System.out.println("Which direction would you like to go?");
+            String userChoice = scanner.nextLine().toLowerCase();
 
             // Handle inventory commands
             if (userChoice.equals("inventory") || userChoice.equals("i")) {
                 player.getInventory().showInventory();
-            } else if (userChoice.startsWith("drop")|| userChoice.equals("d")) {
+            } else if (userChoice.startsWith("drop") || userChoice.equals("d")) {
                 String item = userChoice.substring(7);
                 player.getInventory().removeItem(item);
-            } else if (userChoice.startsWith("equip ")|| userChoice.equals("eq")) {
+            } else if (userChoice.startsWith("equip ") || userChoice.equals("eq")) {
                 String[] parts = userChoice.split(" ", 3);
-                if (parts.length == 3) {// splits equip command into parts to enter it into the equipItem method
+                if (parts.length == 3) {
                     String slot = parts[1];
                     String item = parts[2];
                     player.getInventory().equipItem(slot, item);
-                    } else {
-                        System.out.println("Invalid equip command. Use 'equip <slot> <item>'.");
-                    }
-                } else if(userChoice.equals("controls") || userChoice.equals("c")) {
-                    System.out.println("--CONTROLS--");
-                    System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
-                    System.out.println("-To view your inventory, type 'inventory(i)'.-");
-                    System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
-                    System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
-                    System.out.println("-To view the controls, type 'controls(c)'.-");
-                    System.out.println();
+                } else {
+                    System.out.println("Invalid equip command. Use 'equip <slot> <item>'.");
                 }
-             else {
-                player.move(userChoice); // Move the player in the chosen direction
+            } else if (userChoice.equals("controls") || userChoice.equals("c")) {
+                System.out.println("--CONTROLS--");
+                System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
+                System.out.println("-To view your inventory, type 'inventory(i)'.-");
+                System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
+                System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
+                System.out.println("-To attack, type 'a', To block type 'b'-");
+                System.out.println("-To view the controls, type 'controls(c)'.-");
+                System.out.println();
+            } else {
+                player.move(userChoice);
             }
         }
     }
 
-    
     // Prints the main story start of the game
     public static void printMainStoryStart() {
         System.out.println("________________________________________________________________________________________________________________");
         System.out.println();
         System.out.println("▄▄▄        █████▒▄▄▄█████▓▓█████  ██▀███        ▄▄▄█████▓ ██░ ██ ▓█████         █████▒▄▄▄       ██▓     ██▓    \r\n" + //
-                        "▒████▄    ▓██   ▒ ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒      ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀       ▓██   ▒▒████▄    ▓██▒    ▓██▒    \r\n" + //
-                        "▒██  ▀█▄  ▒████ ░ ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒      ▒ ▓██░ ▒░▒██▀▀██░▒███         ▒████ ░▒██  ▀█▄  ▒██░    ▒██░    \r\n" + //
-                        "░██▄▄▄▄██ ░▓█▒  ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄        ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄       ░▓█▒  ░░██▄▄▄▄██ ▒██░    ▒██░    \r\n" + //
-                        " ▓█   ▓██▒░▒█░      ▒██▒ ░ ░▒████▒░██▓ ▒██▒        ▒██▒ ░ ░▓█▒░██▓░▒████▒      ░▒█░    ▓█   ▓██▒░██████▒░██████▒\r\n" + //
-                        " ▒▒   ▓▒█░ ▒ ░      ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░        ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░       ▒ ░    ▒▒   ▓▒█░░ ▒░▓  ░░ ▒░▓  ░\r\n" + //
-                        "  ▒   ▒▒ ░ ░          ░     ░ ░  ░  ░▒ ░ ▒░          ░     ▒ ░▒░ ░ ░ ░  ░       ░       ▒   ▒▒ ░░ ░ ▒  ░░ ░ ▒  ░\r\n" + //
-                        "  ░   ▒    ░ ░      ░         ░     ░░   ░         ░       ░  ░░ ░   ░          ░ ░     ░   ▒     ░ ░     ░ ░   \r\n" + //
-                        "      ░  ░                    ░  ░   ░                     ░  ░  ░   ░  ░                   ░  ░    ░  ░    ░  ░\r"  //
-               
-                );//ART by patorjk.com
+                "▒████▄    ▓██   ▒ ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒      ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀       ▓██   ▒▒████▄    ▓██▒    ▓██▒    \r\n" + //
+                "▒██  ▀█▄  ▒████ ░ ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒      ▒ ▓██░ ▒░▒██▀▀██░▒███         ▒████ ░▒██  ▀█▄  ▒██░    ▒██░    \r\n" + //
+                "░██▄▄▄▄██ ░▓█▒  ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄        ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄       ░▓█▒  ░░██▄▄▄▄██ ▒██░    ▒██░    \r\n" + //
+                " ▓█   ▓██▒░▒█░      ▒██▒ ░ ░▒████▒░██▓ ▒██▒        ▒██▒ ░ ░▓█▒░██▓░▒████▒      ░▒█░    ▓█   ▓██▒░██████▒░██████▒\r\n" + //
+                " ▒▒   ▓▒█░ ▒ ░      ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░        ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░       ▒ ░    ▒▒   ▓▒█░░ ▒░▓  ░░ ▒░▓  ░\r\n" + //
+                "  ▒   ▒▒ ░ ░          ░     ░ ░  ░  ░▒ ░ ▒░          ░     ▒ ░▒░ ░ ░ ░  ░       ░       ▒   ▒▒ ░░ ░ ▒  ░░ ░ ▒  ░\r\n" + //
+                "  ░   ▒    ░ ░      ░         ░     ░░   ░         ░       ░  ░░ ░   ░          ░ ░     ░   ▒     ░ ░     ░ ░   \r\n" + //
+                "      ░  ░                    ░  ░   ░                     ░  ░  ░   ░  ░                   ░  ░    ░  ░    ░  ░\r"  //
+        ); // ART by patorjk.com
         System.out.println("________________________________________________________________________________________________________________");
         System.out.println();
         System.out.println("--CONTROLS--");
@@ -79,8 +77,8 @@ public class Main {
         System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
         System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
         System.out.println("PRESS ENTER TO BEGIN");
-        scanner.nextLine(); //Wait for user to press enter
-    
+        scanner.nextLine(); // Wait for user to press enter
+
         System.out.println();
         System.out.println("Ten years ago, the world was forever changed...");
         System.out.println();
@@ -96,7 +94,8 @@ public class Main {
         System.out.println();
         System.out.println("This is their story...");
         System.out.println("PRESS ENTER TO CONTINUE");
-        scanner.nextLine(); //Wait for user to press enter
+        scanner.nextLine(); // Wait for user to press enter
         System.out.println();
     }
 }
+//COMBAT WAS INSPIRED AND ASSISTED BY CHATGDP 

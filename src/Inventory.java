@@ -11,7 +11,7 @@ public class Inventory {
     private String shoes; // Slot for the shoes
     private String weapon; // Slot for the weapon
 
-    // Constructor to initialize the inventory
+    // creates the item slots and makes the items list an ArrayList
     public Inventory() {
         items = new ArrayList<>();
         helmet = "None";

@@ -3,49 +3,44 @@ package src;
 import java.util.List;
 import java.util.Map;
 
-
 public class Player {
-    public Room currentRoom; // The current room the player is in (Is just an object of the Room class that is used to hold the information of the rooms)
-    public String location; // The current location of the player (Used to look at the rooms description from the current room)
-    public Inventory inventory; // The player's inventory
-    
-   
-    // The starting room for the player.
-    public Player(Room startingRoom) {
-        currentRoom = startingRoom;
-        location = "village prison cell"; // Starting location
-        inventory = new Inventory(); // Initialize the player's inventory
+    public String location;
+    public Room currentRoom;
+    public Combat combat;
+    public Inventory inventory;
+
+    public Player(Room currentRoom) {
+        this.currentRoom = currentRoom;
+        location = "village prison cell"; // starting room
+        combat = new Combat(); // Combat class
+        inventory = new Inventory(); //Inventory class 
     }
 
-    
-     // Moves the player in the specified direction the direction to move (north, south, east, west)
-     
     public void move(String direction) {
-        // Get the neighboring rooms in the north-south and west-east directions
         Map<String, List<String>> neighborNS = currentRoom.getNeighborNS();
         Map<String, List<String>> neighborWE = currentRoom.getNeighborWE();
-        //makes the nextRoom variable null(empty)
+        // makes the nextRoom variable null(empty)
         String nextRoom = null;
         // Determine the next room based on the direction
         switch (direction.toLowerCase()) {
             case "north":
             case "n":
-            direction = "north";
+                direction = "north";
                 nextRoom = neighborNS.get(location).get(0);
                 break;
             case "south":
             case "s":
-            direction = "south";
+                direction = "south";
                 nextRoom = neighborNS.get(location).get(1);
                 break;
             case "west":
             case "w":
-            direction = "west";
+                direction = "west";
                 nextRoom = neighborWE.get(location).get(0);
                 break;
             case "east":
             case "e":
-            direction = "east";
+                direction = "east";
                 nextRoom = neighborWE.get(location).get(1);
                 break;
             default:
@@ -59,29 +54,43 @@ public class Player {
         } else {
             // Update the player's location to the next room
             location = nextRoom;
+            System.out.println();
             System.out.println("You move " + direction + " to " + location);
             // Print the description of the new room
+            System.out.println();
             System.out.println(currentRoom.getRooms().get(location));
+
+            // Check for encounter in the new room
+            Map<String, List<String>> roomEncounters = currentRoom.getRoomEncounter();
+            List<String> encounters = roomEncounters.get(location);
+            if (encounters != null && !encounters.isEmpty()) {
+                for (String encounter : encounters) {
+                    combat.checkRoomForEncounter(encounter);
+                }
+            }
         }
 
-         // Check if the player has reached the village gate and give basic items
-         if (location.equals("village gate")) {
+        // Check if the player has reached the village gate and give basic items
+        if (location.equals("village gate")) {
             List<String> items = currentRoom.getItems().get(location);
             for (String item : items) {
                 inventory.addItem(item);
             }
         }
+
+        // Check if the player has reached the bad ending and reset location
+        if (location.equals("bad ending")) {
+            System.out.println("You have reached the bad ending. Resetting location to village prison cell.");
+            location = "village prison cell";
+        }
     }
-    
-        
-         // Returns the current room the player is in.
-         //currentRoom is used to get the rooms neighbors
-        public Room getCurrentRoom() {
+
+    // Returns the current room the player is in.
+    public Room getCurrentRoom() {
         return currentRoom;
     }
 
     // Returns the current location of the player.
-    //location is used to look at the rooms description
     public String getLocation() {
         return location;
     }
@@ -90,10 +99,3 @@ public class Player {
         return inventory;
     }
 }
-
-    
-            
-        
-    
-
-  
