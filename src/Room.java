@@ -156,7 +156,7 @@ public class Room {
         neighborNS.put("abandoned park", Arrays.asList("STOP", "STOP"));
         neighborWE.put("abandoned park", Arrays.asList("city outskirts", "STOP"));
         roomItems.put("abandoned park", Arrays.asList());
-        roomEncounter.put("abandoned park", Arrays.asList("Zombie"));
+        roomEncounter.put("abandoned park", Arrays.asList("zombie"));
 
         // City center
         rooms.put("city center", "**You enter the city center, where the chaos is even more apparent.**\n"
@@ -165,7 +165,7 @@ public class Room {
         neighborNS.put("city center", Arrays.asList("hospital", "city outskirts"));
         neighborWE.put("city center", Arrays.asList("STOP", "deserted mall"));
         roomItems.put("city center", Arrays.asList("Food", "Water", "Basic Medical Supplies"));
-        roomEncounter.put("city center", Arrays.asList("City boss Zombie"));
+        roomEncounter.put("city center", Arrays.asList("city boss zombie"));
 
         // Deserted mall
         rooms.put("deserted mall", "**You explore a deserted mall, its once-bustling shops now empty and abandoned.**\n"
@@ -174,7 +174,7 @@ public class Room {
         neighborNS.put("deserted mall", Arrays.asList("STOP", "STOP"));
         neighborWE.put("deserted mall", Arrays.asList("city center", "STOP"));
         roomItems.put("deserted mall", Arrays.asList("Food", "Water", "Basic Medical Supplies"));
-        roomEncounter.put("deserted mall", Arrays.asList("Shiny Hand Axe"));
+        roomEncounter.put("deserted mall", Arrays.asList("shiny hand axe"));
 
         // Hospital
         rooms.put("hospital", "**You arrive at the hospital, a key location in your search for the cure.**\n"
@@ -182,8 +182,8 @@ public class Room {
                 + "**To the north is the research lab, and to the east is the emergency room.**");
         neighborNS.put("hospital", Arrays.asList("research lab", "city center"));
         neighborWE.put("hospital", Arrays.asList("STOP", "emergency room"));
-        roomItems.put("hospital", Arrays.asList("Basic medical supplies", "Advanced medical supplies"));
-        roomEncounter.put("hospital", Arrays.asList("Mutated Zombie"));
+        roomItems.put("hospital", Arrays.asList());
+        roomEncounter.put("hospital", Arrays.asList("mutated zombie"));
 
         // Emergency room
         rooms.put("emergency room", "**You enter the emergency room, where the chaos of the outbreak is still evident.**\n"
@@ -191,7 +191,7 @@ public class Room {
                 + "**To the west is the hospital.**");
         neighborNS.put("emergency room", Arrays.asList("STOP", "STOP"));
         neighborWE.put("emergency room", Arrays.asList("hospital", "STOP"));
-        roomItems.put("emergency room", Arrays.asList("Advanced medical supplies", "Basic medical supplies"));
+        roomItems.put("emergency room", Arrays.asList("advanced medical supplies"));
         roomEncounter.put("emergency room", Arrays.asList());
 
         // Research lab
@@ -201,7 +201,7 @@ public class Room {
         neighborNS.put("research lab", Arrays.asList("quarantine zone", "hospital"));
         neighborWE.put("research lab", Arrays.asList("STOP", "storage room"));
         roomItems.put("research lab", Arrays.asList());
-        roomEncounter.put("research lab", Arrays.asList("Mutated Zombie"));
+        roomEncounter.put("research lab", Arrays.asList("mutated zombie"));
 
         // Storage room
         rooms.put("storage room", "**You find the storage room, filled with supplies and equipment.**\n"
@@ -209,7 +209,7 @@ public class Room {
                 + "**To the west is the research lab.**");
         neighborNS.put("storage room", Arrays.asList("STOP", "STOP"));
         neighborWE.put("storage room", Arrays.asList("research lab", "STOP"));
-        roomItems.put("storage room", Arrays.asList("food", "water", "Basic medical supplies", "Upgraded helmet", "Upgraded vest", "Upgraded pants", "Upgraded shoes", "Upgraded weapon"));
+        roomItems.put("storage room", Arrays.asList("food", "water", "basic medical supplies", "upgraded helmet", "upgraded vest", "upgraded pants", "upgraded shoes", "upgraded weapon"));
         roomEncounter.put("storage room", Arrays.asList());
 
         // Quarantine zone
@@ -219,7 +219,7 @@ public class Room {
         neighborNS.put("quarantine zone", Arrays.asList("military base", "research lab"));
         neighborWE.put("quarantine zone", Arrays.asList("STOP", "guard post"));
         roomItems.put("quarantine zone", Arrays.asList());
-        roomEncounter.put("quarantine zone", Arrays.asList("Mutated Zombie"));
+        roomEncounter.put("quarantine zone", Arrays.asList("mutated zombie"));
 
         // Guard post
         rooms.put("guard post", "**You find the guard post, where soldiers once monitored the quarantine zone.**\n"
@@ -236,8 +236,8 @@ public class Room {
                 + "**To the north is the quarantine zone.**");
         neighborNS.put("military base", Arrays.asList("STOP", "quarantine zone"));
         neighborWE.put("military base", Arrays.asList("STOP", "STOP"));
-        roomItems.put("military base", Arrays.asList("Advanced medical supplies", "military helmet", "military vest", "military pants", "military shoes", "military weapon"));
-        roomEncounter.put("military base", Arrays.asList("Final boss Zombie"));
+        roomItems.put("military base", Arrays.asList("advanced medical supplies", "military helmet", "military vest", "military pants", "military shoes", "military weapon"));
+        roomEncounter.put("military base", Arrays.asList("final boss zombie"));
     }
 
     // Returns the map of rooms and their descriptions.
