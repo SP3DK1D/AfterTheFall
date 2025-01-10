@@ -5,15 +5,16 @@ import java.util.Map;
 
 
 public class Player {
-    private Room currentRoom; // The current room the player is in (Is just an object of the Room class that is used to hold the information of the rooms)
-    private String location; // The current location of the player (Used to look at the rooms description from the current room)
-
+    public Room currentRoom; // The current room the player is in (Is just an object of the Room class that is used to hold the information of the rooms)
+    public String location; // The current location of the player (Used to look at the rooms description from the current room)
+    public Inventory inventory; // The player's inventory
     
    
     // The starting room for the player.
     public Player(Room startingRoom) {
-        this.currentRoom = startingRoom;
-        this.location = "village prison cell"; // Starting location
+        currentRoom = startingRoom;
+        location = "village prison cell"; // Starting location
+        inventory = new Inventory(); // Initialize the player's inventory
     }
 
     
@@ -62,12 +63,20 @@ public class Player {
             // Print the description of the new room
             System.out.println(currentRoom.getRooms().get(location));
         }
-    }
 
+         // Check if the player has reached the village gate and give basic items
+         if (location.equals("village gate")) {
+            List<String> items = currentRoom.getItems().get(location);
+            for (String item : items) {
+                inventory.addItem(item);
+            }
+        }
+    }
     
-     // Returns the current room the player is in.
-     //currentRoom is used to get the rooms neighbors
-    public Room getCurrentRoom() {
+        
+         // Returns the current room the player is in.
+         //currentRoom is used to get the rooms neighbors
+        public Room getCurrentRoom() {
         return currentRoom;
     }
 
@@ -76,4 +85,15 @@ public class Player {
     public String getLocation() {
         return location;
     }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
 }
+
+    
+            
+        
+    
+
+  
