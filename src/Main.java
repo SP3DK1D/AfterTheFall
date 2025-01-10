@@ -56,9 +56,8 @@ public class Main {
     }
 
     
-     // Prints the main story start of the game and the starting title.
+    // Prints the main story start of the game
     public static void printMainStoryStart() {
-
         System.out.println("________________________________________________________________________________________________________________");
         System.out.println();
         System.out.println("▄▄▄        █████▒▄▄▄█████▓▓█████  ██▀███        ▄▄▄█████▓ ██░ ██ ▓█████         █████▒▄▄▄       ██▓     ██▓    \r\n" + //
@@ -74,7 +73,14 @@ public class Main {
                 );//ART by patorjk.com
         System.out.println("________________________________________________________________________________________________________________");
         System.out.println();
-        System.out.println("After The Fall");
+        System.out.println("--CONTROLS--");
+        System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
+        System.out.println("-To view your inventory, type 'inventory(i)'.-");
+        System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
+        System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
+        System.out.println("PRESS ENTER TO BEGIN");
+        scanner.nextLine(); //Wait for user to press enter
+    
         System.out.println();
         System.out.println("Ten years ago, the world was forever changed...");
         System.out.println();
@@ -89,6 +95,8 @@ public class Main {
         System.out.println("and they embark on a perilous journey to save humanity from the brink of extinction.");
         System.out.println();
         System.out.println("This is their story...");
+        System.out.println("PRESS ENTER TO CONTINUE");
+        scanner.nextLine(); //Wait for user to press enter
         System.out.println();
     }
 }
