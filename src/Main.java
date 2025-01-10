@@ -92,3 +92,4 @@ public class Main {
     }
 }
 //COMBAT WAS INSPIRED AND ASSISTED BY CHATGDP
+//add type.sleep to mkae it more user friendly
