@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     // Scanner object to read user input
-    private static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         // Print the main story start
