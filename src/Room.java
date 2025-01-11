@@ -235,7 +235,7 @@ public class Room {
         rooms.put("quarantine zone", "**You reach the quarantine zone, a heavily guarded area where the infected were once held.**\n"
                 + "**The area is eerily quiet, and you must be cautious.**\n\n"
                 + "\n"
-                + "--To the north is the guard post.--");
+                + "--To the west is the guard post.--");
         neighborNS.put("quarantine zone", Arrays.asList("STOP", "research lab"));
         neighborWE.put("quarantine zone", Arrays.asList("guard post", "STOP"));
         roomItems.put("quarantine zone", Arrays.asList());
@@ -245,7 +245,7 @@ public class Room {
         rooms.put("guard post", "**You find the guard post, where soldiers once monitored the quarantine zone.**\n"
                 + "**The post is abandoned, but it might hold some useful information.**\n\n"
                 + "\n"
-                + "--To the west is the quarantine zone.--");
+                + "--To the west is the military base.--");
         neighborNS.put("guard post", Arrays.asList("quarantine zone", "STOP"));
         neighborWE.put("guard post", Arrays.asList("military base", "STOP"));
         roomItems.put("guard post", Arrays.asList());

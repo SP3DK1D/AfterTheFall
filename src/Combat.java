@@ -94,7 +94,7 @@ public class Combat {
             if (action.equals("a")) {
                 // Attack logic
                 if (Math.random() > 0.5) {
-                    encounterHP -= 10; // Example damage value
+                    encounterHP -= 10; // damage
                     System.out.println(">>> You attacked the " + encounter + " for 10 damage!");
                 } else {
                     System.out.println(">>> Your attack missed!");
@@ -119,13 +119,12 @@ public class Combat {
         }
         if (playerHealth <= 0) {
             System.out.println("\n*** YOU DIED ***");
+            System.out.println("\n*** FIGHT AGAIN ***");
             playerHealth = 100; // Reset player health for retry
             startCombat(encounter); // Restart combat
         } else if (encounterHP <= 0) {
             System.out.println("\n*** YOU DEFEATED THE " + encounter.toUpperCase() + " ***");
-            // Print the current room description after winning the fight
-            Room room = new Room();
-            System.out.println(room.getRooms());
+            
         }
     }
 }
