@@ -2,23 +2,34 @@
 
 A stylized terminal RPG in Java.
 
-## New Features
+## Super easy start (double-click)
+After downloading this repo from GitHub as a ZIP and extracting it:
+
+- **Windows:** double-click `start-game.bat`
+- **macOS:** double-click `start-game.command`
+  - If macOS blocks it on first launch, run once in Terminal:
+    - `chmod +x start-game.command`
+- **Linux:** run `./start-game.sh` from a terminal
+
+These launchers compile and start the game automatically.
+
+## Project structure
+- `src/` - Java source code (`Main`, `Player`, `Combat`, `Inventory`, `Room`)
+- `start-game.bat` - Windows double-click launcher
+- `start-game.command` - macOS double-click launcher
+- `start-game.sh` - Linux launcher
+
+## Features
 - Colorized terminal UI for HUD, encounters, and victory moments.
 - ASCII city map command (`map`) with live player location.
-- New side area: **Drone Nest** with extra loot and encounter.
+- Side area: **Drone Nest** with extra loot and encounter.
 - Objective tracker (`objective`) and required `Core Stabilizer` for true ending.
 - Rest command (`rest`) for tactical healing.
-- Expanded black market shop with permanent weapon tune-up upgrades.
-- Enhanced combat feel with enemy intent hints and crit-style spikes.
+- Black market shop with permanent weapon tune-up upgrades.
+- Combat with attack/skill/item/flee choices, enemy intent hints, and crit spikes.
+- XP leveling and scrap currency progression.
 
-## Existing Core Features
-- Directional exploration in a ruined city map.
-- Dynamic combat with attack/skill/item/flee choices.
-- Loot and auto-equipping gear upgrades.
-- Consumables (medkit, energy drink, bomb).
-- XP, leveling, scrap currency, and boss progression.
-
-## Run
+## Manual run (without launcher)
 ```bash
 javac src/*.java
 java src.Main
