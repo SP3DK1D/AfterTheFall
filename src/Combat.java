@@ -1,130 +1,87 @@
 package src;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Combat {
-    public List<String> encounters;
-    public Map<String, Integer> encounterHealth;
-    public Map<String, Integer> encounterDamage;
-    public Map<String, Integer> encounterDefence;
-    public int playerHealth;
-    public boolean blockNextAttack;
-    public String currentRoom;
+    private final Random random = new Random();
 
-    public Combat() {
-        encounters = new ArrayList<>();
-        encounterHealth = new HashMap<>();
-        encounterDamage = new HashMap<>();
-        encounterDefence = new HashMap<>();
-        
-        playerHealth = 100; // players health
-        blockNextAttack = false; // part of the combat system where if the block us successful the next attack will be blocked
-        encounterData(); // idk why i gotta put this here but it works
-    }
+    public boolean fight(Player player, String enemy, Scanner scanner) {
+        int enemyHp = enemyBaseHp(enemy) + random.nextInt(8);
+        int enemyAtk = enemyBaseAtk(enemy);
 
-    public void encounterData() {
-        // bandit
-        encounters.add("bandit");
-        encounterHealth.put("bandit", 10);
-        encounterDamage.put("bandit", 2);
-        encounterDefence.put("bandit", 1);
+        System.out.println("\n\u001B[31m⚔ Encounter: " + enemy.toUpperCase() + " appears!\u001B[0m\n");
 
-        // mutated bandit
-        encounters.add("zombie");
-        encounterHealth.put("zombie", 20);
-        encounterDamage.put("zombie", 4);
-        encounterDefence.put("zombie", 2);
+        while (player.isAlive() && enemyHp > 0) {
+            String intent = random.nextInt(100) < 30 ? "heavy strike" : "quick slash";
+            System.out.println("You HP " + player.getHealth() + " | Enemy HP " + enemyHp + " | Intent: " + intent);
+            System.out.println("Actions: attack(a), skill(k), item(i), flee(f)");
+            String action = scanner.nextLine().trim().toLowerCase();
 
-        // zombie
-        encounters.add("mutated zombie");
-        encounterHealth.put("mutated zombie", 30);
-        encounterDamage.put("mutated zombie", 6);
-        encounterDefence.put("mutated zombie", 3);
-
-        // giant zombie
-        encounters.add("giant zombie");
-        encounterHealth.put("giant zombie", 40);
-        encounterDamage.put("giant zombie", 8);
-        encounterDefence.put("giant zombie", 4);
-       
-        // cave boss zombie
-        encounters.add("cave boss zombie");
-        encounterHealth.put("cave boss zombie", 45);
-        encounterDamage.put("cave boss zombie", 9);
-        
-        // city boss zombie
-        encounters.add("city boss zombie");
-        encounterHealth.put("city boss zombie", 50);
-        encounterDamage.put("city boss zombie", 10);
-        encounterDefence.put("city boss zombie", 5);
-
-        // final boss zombie
-        encounters.add("final boss zombie");
-        encounterHealth.put("final boss zombie", 60);
-        encounterDamage.put("final boss zombie", 12);
-        encounterDefence.put("final boss zombie", 6);
-
-    }
-
-    public void checkRoomForEncounter(String roomEncounter) {
-        if (encounters.contains(roomEncounter)) {
-            System.out.println("\n*** You have encountered a " + roomEncounter + "! ***\n");
-            startCombat(roomEncounter);
-        }
-    }
-
-    private void startCombat(String encounter) {
-        Integer encounterHP = encounterHealth.get(encounter);
-        if (encounterHP == null) {
-            System.out.println("Error: Encounter health not found for " + encounter);
-            return;
-        }
-        Scanner scanner = new Scanner(System.in);
-        while (playerHealth > 0 && encounterHP > 0) {
-            System.out.println("\n====================================");
-            System.out.println("Player Health: " + playerHealth + " | " + encounter + " Health: " + encounterHP);
-            System.out.println("====================================");
-            System.out.println("Choose your action: (a) Attack (b) Block");
-            System.out.print("> ");
-            String action = scanner.nextLine();
-            if (action.equals("a")) {
-                // Attack logic
-                if (Math.random() > 0.5) {
-                    encounterHP -= 10; // damage
-                    System.out.println(">>> You attacked the " + encounter + " for 10 damage!");
+            if (action.equals("attack") || action.equals("a")) {
+                int damage = player.attackDamage(random);
+                enemyHp -= damage;
+                System.out.println("You hit for " + damage + " damage.");
+            } else if (action.equals("skill") || action.equals("k")) {
+                int damage = player.useSkill(random);
+                if (damage <= 0) {
+                    System.out.println("No energy! You fail to cast skill.");
                 } else {
-                    System.out.println(">>> Your attack missed!");
+                    enemyHp -= damage;
+                    System.out.println("Skill blast deals " + damage + " damage!");
                 }
-            } else if (action.equals("b")) {
-                // Block logic
-                if (Math.random() > 0.5) {
-                    blockNextAttack = true;
-                    System.out.println("\n>>> You successfully blocked the next attack!");
-                } else {
-                    System.out.println("\n>>> Your block failed!");
-                    if (Math.random() > 0.5) {
-                        playerHealth -= encounterDamage.get(encounter);
-                        System.out.println(">>> The " + encounter + " attacked you for " + encounterDamage.get(encounter) + " damage!");
-                    } else {
-                        System.out.println(">>> The " + encounter + "'s attack missed!");
-                    }
+            } else if (action.equals("item") || action.equals("i")) {
+                System.out.println("Use: medkit | energy drink | bomb");
+                String itemChoice = scanner.nextLine().trim().toLowerCase();
+                if (!player.useItem(itemChoice)) {
+                    System.out.println("You don't have that item.");
                 }
+            } else if (action.equals("flee") || action.equals("f")) {
+                if (random.nextInt(100) < 35) {
+                    System.out.println("You escaped!");
+                    return false;
+                }
+                System.out.println("Couldn't escape!");
             } else {
-                System.out.println("\nInvalid action. Please choose (a) Attack or (b) Block.");
+                System.out.println("You hesitate and lose tempo.");
+            }
+
+            if (enemyHp > 0) {
+                int intentBonus = intent.equals("heavy strike") ? 4 : 0;
+                int incoming = Math.max(1, enemyAtk + random.nextInt(4) + intentBonus - player.getDefense());
+                player.takeDamage(incoming);
+                System.out.println(enemy + " hits you for " + incoming + ".");
             }
         }
-        if (playerHealth <= 0) {
-            System.out.println("\n*** YOU DIED ***");
-            System.out.println("\n*** FIGHT AGAIN ***");
-            playerHealth = 100; // Reset player health for retry
-            startCombat(encounter); // Restart combat
-        } else if (encounterHP <= 0) {
-            System.out.println("\n*** YOU DEFEATED THE " + encounter.toUpperCase() + " ***");
-            
+
+        if (!player.isAlive()) {
+            return false;
         }
+
+        int xp = 25 + random.nextInt(25);
+        int scraps = 15 + random.nextInt(20);
+        player.winBattle(xp, scraps);
+        System.out.println("Victory! +" + xp + " XP and +" + scraps + " scraps.");
+        return true;
+    }
+
+    private int enemyBaseHp(String enemy) {
+        return switch (enemy) {
+            case "raider champion" -> 65;
+            case "mutant brute" -> 90;
+            case "sentry overmind" -> 105;
+            case "omega abomination" -> 140;
+            default -> 50;
+        };
+    }
+
+    private int enemyBaseAtk(String enemy) {
+        return switch (enemy) {
+            case "raider champion" -> 10;
+            case "mutant brute" -> 14;
+            case "sentry overmind" -> 16;
+            case "omega abomination" -> 19;
+            default -> 8;
+        };
     }
 }

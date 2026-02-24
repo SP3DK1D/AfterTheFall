@@ -3,93 +3,116 @@ package src;
 import java.util.Scanner;
 
 public class Main {
-    // Scanner object to read user input
-    public static Scanner scanner = new Scanner(System.in);
+    private static final String CYAN = "\u001B[36m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String RESET = "\u001B[0m";
 
     public static void main(String[] args) {
-        // Print the main story start
-        printMainStoryStart();
+        Scanner scanner = new Scanner(System.in);
+        Room world = new Room();
+        Player player = new Player(world);
+        Combat combat = new Combat();
 
-        // Create a starting room
-        Room startingRoom = new Room();
-        // Create a player and set the starting room
-        Player player = new Player(startingRoom);
+        printIntro();
 
-        // Print the description of the starting room
-        System.out.println(player.getCurrentRoom().getRooms().get(player.getLocation()));
+        boolean reactorWon = false;
+        while (player.isAlive() && !reactorWon) {
+            showHud(player, world);
+            System.out.print("\n" + CYAN + "Command > " + RESET);
+            String command = scanner.nextLine().trim().toLowerCase();
 
-        // Main game loop
-        while (true) {
-            System.out.println();
-            System.out.println("You are currently in the " + player.getLocation());
-            System.out.println("Which direction would you like to go?");
-            String userChoice = scanner.nextLine().toLowerCase();
+            switch (command) {
+                case "n", "north", "s", "south", "e", "east", "w", "west" -> {
+                    String normalized = normalizeDirection(command);
+                    System.out.println(player.move(normalized));
+                    System.out.println(world.getDescription(player.getLocation()));
+                    player.autoLoot();
 
-            // Handle inventory commands
-            if (userChoice.equals("inventory") || userChoice.equals("i")) {
-                player.getInventory().showInventory();
-            } else if (userChoice.startsWith("drop") || userChoice.equals("d")) {
-                String item = userChoice.substring(5).trim();
-                player.getInventory().removeItem(item);
-            } else if (userChoice.startsWith("equip ") || userChoice.startsWith("eq ")) {
-                player.handleEquipCommand(userChoice);
-            } else if (userChoice.equals("controls") || userChoice.equals("c")) {
-                System.out.println("--CONTROLS--");
-                System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
-                System.out.println("-To view your inventory, type 'inventory(i)'.-");
-                System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
-                System.out.println("-To equip an item, type 'equip(eq) <item>'.-");
-                System.out.println("-To attack, type 'a', To block type 'b'-");
-                System.out.println("-To view the controls, type 'controls(c)'.-");
-                System.out.println();
-            } else {
-                player.move(userChoice);
+                    if (player.getLocation().equals("black market")) {
+                        player.shopMenu();
+                        System.out.print("Buy item # or press enter to skip: ");
+                        String buy = scanner.nextLine().trim();
+                        if (!buy.isBlank()) {
+                            System.out.println(player.buy(buy) ? "Purchased." : "Not enough scraps / invalid option.");
+                        }
+                    }
+
+                    String enemy = world.getEncounter(player.getLocation());
+                    if (!enemy.isBlank()) {
+                        boolean survived = combat.fight(player, enemy, scanner);
+                        if (!survived && player.isAlive()) {
+                            System.out.println("You retreat and regroup.");
+                        }
+                    }
+
+                    if (player.getLocation().equals("reactor tower") && player.isAlive() && player.hasCoreStabilizer()) {
+                        reactorWon = true;
+                    }
+                }
+                case "inventory", "i" -> player.getInventory().showInventory();
+                case "equip" -> {
+                    System.out.print("Item name to equip: ");
+                    String item = scanner.nextLine().trim();
+                    player.getInventory().equip(item);
+                }
+                case "stats" -> showStats(player);
+                case "map", "m" -> System.out.println(world.renderMap(player.getLocation()));
+                case "rest", "r" -> player.rest();
+                case "objective", "o" -> System.out.println(player.objective());
+                case "help" -> printHelp();
+                case "quit", "q" -> {
+                    System.out.println("You abandon the run... for now.");
+                    return;
+                }
+                default -> System.out.println("Unknown command. Type help.");
             }
+        }
+
+        if (player.isAlive() && reactorWon) {
+            System.out.println("\n" + GREEN + "You install the Cure Core atop the reactor." + RESET);
+            System.out.println(GREEN + "Drones broadcast the antidote into the storm clouds." + RESET);
+            System.out.println(GREEN + "Humanity gets another sunrise. You win! 🎉" + RESET);
+        } else {
+            System.out.println("\nYou fell in the ruins. The city waits for another hero.");
         }
     }
 
-    // Prints the main story start of the game
-    public static void printMainStoryStart() {
-        System.out.println("________________________________________________________________________________________________________________");
-        System.out.println();
-        System.out.println("▄▄▄        █████▒▄▄▄█████▓▓█████  ██▀███        ▄▄▄█████▓ ██░ ██ ▓█████         █████▒▄▄▄       ██▓     ██▓    \r\n" + //
-                "▒████▄    ▓██   ▒ ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒      ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀       ▓██   ▒▒████▄    ▓██▒    ▓██▒    \r\n" + //
-                "▒██  ▀█▄  ▒████ ░ ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒      ▒ ▓██░ ▒░▒██▀▀██░▒███         ▒████ ░▒██  ▀█▄  ▒██░    ▒██░    \r\n" + //
-                "░██▄▄▄▄██ ░▓█▒  ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄        ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄       ░▓█▒  ░░██▄▄▄▄██ ▒██░    ▒██░    \r\n" + //
-                " ▓█   ▓██▒░▒█░      ▒██▒ ░ ░▒████▒░██▓ ▒██▒        ▒██▒ ░ ░▓█▒░██▓░▒████▒      ░▒█░    ▓█   ▓██▒░██████▒░██████▒\r\n" + //
-                " ▒▒   ▓▒█░ ▒ ░      ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░        ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░       ▒ ░    ▒▒   ▓▒█░░ ▒░▓  ░░ ▒░▓  ░\r\n" + //
-                "  ▒   ▒▒ ░ ░          ░     ░ ░  ░  ░▒ ░ ▒░          ░     ▒ ░▒░ ░ ░ ░  ░       ░       ▒   ▒▒ ░░ ░ ▒  ░░ ░ ▒  ░\r\n" + //
-                "  ░   ▒    ░ ░      ░         ░     ░░   ░         ░       ░  ░░ ░   ░          ░ ░     ░   ▒     ░ ░     ░ ░   \r\n" + //
-                "      ░  ░                    ░  ░   ░                     ░  ░  ░   ░  ░                   ░  ░    ░  ░    ░  ░\r"  //
-        ); // ART by patorjk.com
-        System.out.println("________________________________________________________________________________________________________________");
-        System.out.println();
-        System.out.println("--CONTROLS--");
-        System.out.println("-To move, type 'north(n)', 'south(s)', 'east(e)', or 'west(w)'.-");
-        System.out.println("-To view your inventory, type 'inventory(i)'.-");
-        System.out.println("-To drop an item from your inventory, type 'drop(d) <item>'.-");
-        System.out.println("-To equip an item, type 'equip(eq) <slot> <item>'.-");
-        System.out.println("PRESS ENTER TO BEGIN");
-        scanner.nextLine(); // Wait for user to press enter
+    private static void printIntro() {
+        System.out.println(YELLOW + "====================================" + RESET);
+        System.out.println(YELLOW + " AFTER THE FALL: OVERDRIVE EDITION" + RESET);
+        System.out.println(YELLOW + "====================================" + RESET);
+        System.out.println("Stylized terminal RPG with map, quests, loot, skills, leveling, shops, and boss fights.");
+        printHelp();
+    }
 
-        System.out.println();
-        System.out.println("Ten years ago, the world was forever changed...");
-        System.out.println();
-        System.out.println("It all began with a mysterious virus outbreak. The virus spread rapidly, turning humans into mindless, flesh-eating creatures.");
-        System.out.println("Cities fell, governments collapsed, and civilization as we knew it crumbled.");
-        System.out.println();
-        System.out.println("Now, ten years later, the world is a desolate wasteland. Small pockets of survivors struggle to stay alive,");
-        System.out.println("fighting off the relentless hordes of the undead and scavenging for resources.");
-        System.out.println();
-        System.out.println("In this harsh new reality, trust is a rare commodity, and danger lurks around every corner.");
-        System.out.println("But amidst the darkness, a glimmer of hope remains. A group of survivors has discovered a potential cure,");
-        System.out.println("and they embark on a perilous journey to save humanity from the brink of extinction.");
-        System.out.println();
-        System.out.println("This is their story...");
-        System.out.println("PRESS ENTER TO CONTINUE");
-        scanner.nextLine(); // Wait for user to press enter
-        System.out.println();
+    private static void printHelp() {
+        System.out.println("\nCommands: n/s/e/w, map(m), objective(o), rest(r), inventory(i), equip, stats, help, quit");
+        System.out.println("Combat: attack(a), skill(k), item(i), flee(f)");
+    }
+
+    private static void showHud(Player player, Room world) {
+        System.out.println("\n--- " + player.getLocation().toUpperCase() + " ---");
+        System.out.println(world.getDescription(player.getLocation()));
+        System.out.println("Exits: " + world.exitsText(player.getLocation()));
+    }
+
+    private static void showStats(Player player) {
+        System.out.println("\n=== STATS ===");
+        System.out.println("Level: " + player.getLevel());
+        System.out.println("HP: " + player.getHealth());
+        System.out.println("Energy: " + player.getEnergy());
+        System.out.println("XP: " + player.getXp());
+        System.out.println("Scraps: " + player.getScraps());
+    }
+
+    private static String normalizeDirection(String direction) {
+        return switch (direction) {
+            case "n" -> "north";
+            case "s" -> "south";
+            case "e" -> "east";
+            case "w" -> "west";
+            default -> direction;
+        };
     }
 }
-//COMBAT WAS INSPIRED AND ASSISTED BY CHATGDP
-//add type.sleep to mkae it more user friendly
