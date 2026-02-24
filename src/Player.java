@@ -120,8 +120,8 @@ public class Player {
 
     public String objective() {
         if (!coreStabilizer) {
-            return "Objective: Find the Core Stabilizer (*) and reach the Reactor Door (+).";
+            return "Objective: Clear enemies, loot gear, and secure the zone.";
         }
-        return "Objective: Enter the Reactor Door (+) and survive.";
+        return "Objective: Stabilizer found. Finish clearing remaining enemies.";
     }
 }

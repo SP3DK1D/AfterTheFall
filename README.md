@@ -1,48 +1,38 @@
 # AfterTheFall
 
-A 2D top-down ASCII RPG in Java (terminal-based).
+2D top-down ASCII RPG in the terminal.
 
-## Quick start (download from GitHub and run)
-- **Windows:** double-click `start-game.bat`
-- **macOS:** double-click `start-game.command`
-- **Linux:** run `./start-game.sh`
-
-## Controls
-- `W A S D` - move on the grid
-- `I` - inventory
-- `M` - map help/legend hint
-- `R` - rest (heal)
-- `Q` - quit
-
-Combat controls:
-- `A` attack
-- `K` skill
-- `I` use item
-- `F` flee
-
-## ASCII legend
-- Player `@`
-- Wall `#`
-- Floor `.`
-- Door `+`
-- Enemy `E`
-- NPC `N`
-- Item `*`
-- Water `~`
-- Empty ` `
-
-## Project structure
-- `src/Main.java` entry point
-- `src/Game.java` deterministic game loop (input -> update -> render)
-- `src/WorldMap.java` 2D grid world + entities + collisions/interactions
-- `src/Renderer.java` ASCII renderer + HUD
-- `src/Player.java` stats/progression/objective state
-- `src/Combat.java` turn-based combat system
-- `src/Inventory.java` items/equipment/consumables/shop purchases
-- `src/Enemy.java`, `src/ItemEntity.java`, `src/Npc.java`, `src/Position.java` support entities
-
-## Manual run
+## Run
 ```bash
 javac src/*.java
 java src.Main
 ```
+
+### Optional flags
+- `--seed 12345` reproducible procedural map
+- `--instant` try real-time single-key mode (default)
+- `--enter` force line/Enter mode fallback
+
+Example:
+```bash
+java src.Main --seed 42 --enter
+```
+
+## Controls
+- Movement: `W A S D`
+- `I` inventory
+- `R` rest
+- `` ` `` toggle debug overlay
+- `Q` quit
+
+Combat mini-game:
+- Timing bar, press Space in sweet spot for best damage.
+
+## Features
+- Procedural rooms+corridors world with seed support
+- Camera/viewport rendering (60x25) on larger map
+- Layered renderer (terrain + entities + effects flash)
+- Enemy chase/wander AI with detection radius
+- Clear-all-enemies win condition
+- ANSI in-place redraw with newline fallback
+- Instant input mode with safe Enter mode fallback

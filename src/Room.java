@@ -1,11 +1,8 @@
 package src;
 
-/**
- * Backward-compatible wrapper kept so older references to Room still compile.
- * New code uses WorldMap.
- */
+/** Compatibility wrapper. Prefer WorldMap. */
 public class Room extends WorldMap {
     public Room() {
-        super();
+        super(120, 60, System.currentTimeMillis());
     }
 }
