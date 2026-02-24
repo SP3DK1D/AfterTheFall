@@ -1,31 +1,72 @@
-# AfterTheFall
+# AfterTheFall (C++ / raylib)
 
-AfterTheFall is now a **desktop 2D action-RPG** built with Java Swing (not terminal ASCII mode).
+AfterTheFall has been migrated from Java terminal prototype to a **C++ 2D open-world survival/automation MVP** using **raylib**.
 
-## What changed
-- Real-time movement with smooth rendering in a game window.
-- Tile-based world with camera, lighting-inspired colors, and a side HUD.
-- Procedural map generation with seed support.
-- Enemy AI (chase behavior), loot, trader/shop, leveling, and scraps economy.
-- Working timing-based combat mini-game in a pop-up battle panel.
+## Why raylib
+- Faster iteration and simpler API than SDL2 for a solo/small project.
+- Built-in camera, input polling, shapes/text rendering, and straightforward game loop.
+- Beginner-friendly for extending toward a full Factorio-style architecture.
 
-## Run
-```bash
-javac src/*.java
-java src.Main
-```
-
-Optional seed:
-```bash
-java src.Main --seed 12345
-```
+## Implemented Milestones
+1. Procedural world + camera-follow player movement + responsive WASD.
+2. Mining (hold LMB), inventory tracking, hotbar + HUD.
+3. Crafting recipes + furnace/miner/chest/assembler/belt/inserter building placement.
+4. Basic automation simulation ticks (20 TPS): miners produce, furnaces smelt, inserters transfer.
+5. Enemy AI (wander/chase), survival pressure (HP/energy), and area-clear objective.
+6. In-game Guide panel with progression instructions + debug overlay.
 
 ## Controls
 - `W A S D` move
-- `I` inventory
-- `R` rest
-- `Q` quit
+- `LMB` hold to mine / click to attack enemy
+- `RMB` place selected building
+- `1..6` select build slot (Miner/Furnace/Chest/Belt/Inserter/Assembler)
+- `LEFT/RIGHT` rotate build direction
+- `C` crafting panel
+- `B` build panel
+- `G` guide panel
+- `R` recover some energy
+- `F3` debug overlay
 
-## Notes
-- A graphical desktop environment is required (X11/Wayland on Linux, standard desktop on macOS/Windows).
-- If launched in a headless shell, the game prints a friendly message and exits.
+## Build & Run
+
+### Linux
+```bash
+# Install raylib + build tools (example for Debian/Ubuntu)
+sudo apt install build-essential cmake libraylib-dev
+
+cmake -S cpp -B cpp/build
+cmake --build cpp/build -j
+./cpp/build/after_the_fall_factory --seed 12345
+```
+
+### macOS
+```bash
+# with Homebrew
+brew install raylib cmake
+
+cmake -S cpp -B cpp/build
+cmake --build cpp/build -j
+./cpp/build/after_the_fall_factory --seed 12345
+```
+
+### Windows (MSVC)
+```powershell
+# Install raylib and CMake (vcpkg example)
+vcpkg install raylib:x64-windows
+
+cmake -S cpp -B cpp/build -DCMAKE_TOOLCHAIN_FILE=<vcpkg-root>/scripts/buildsystems/vcpkg.cmake
+cmake --build cpp/build --config Release
+.\cpp\build\Release\after_the_fall_factory.exe --seed 12345
+```
+
+### Windows (MinGW)
+```bash
+# Ensure raylib + g++ + cmake are installed
+cmake -S cpp -B cpp/build -G "MinGW Makefiles"
+cmake --build cpp/build -j
+./cpp/build/after_the_fall_factory.exe --seed 12345
+```
+
+## Code Layout
+- `cpp/src/main.cpp` all MVP systems in one beginner-friendly file (next step: split by systems/files).
+- `cpp/CMakeLists.txt` build configuration.
