@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/** Player inventory, consumables, and equipment bonuses. */
 public class Inventory {
     private final List<String> bag = new ArrayList<>();
     private final Map<String, Integer> consumables = new LinkedHashMap<>();
@@ -41,19 +42,15 @@ public class Inventory {
         };
     }
 
-    public void equip(String item) {
+    public void autoEquipIfPossible(String item) {
         String lowered = item.toLowerCase();
         if (lowered.contains("machete") || lowered.contains("bat") || lowered.contains("railgun")) {
             weapon = item;
-            System.out.println("You equipped " + item + " as your weapon.");
             return;
         }
         if (lowered.contains("armor") || lowered.contains("plating") || lowered.contains("jacket")) {
             armor = item;
-            System.out.println("You equipped " + item + " as your armor.");
-            return;
         }
-        System.out.println("You can't equip that.");
     }
 
     public boolean useConsumable(String item) {
@@ -71,17 +68,49 @@ public class Inventory {
         consumables.put(key, consumables.getOrDefault(key, 0) + amount);
     }
 
-    public void upgradeWeapon() {
-        weaponMod += 2;
-        System.out.println("Your weapon is reinforced. Permanent ATK +2.");
+    public boolean buyUpgradeForScraps(Player player, String choice) {
+        return switch (choice) {
+            case "1" -> buyConsumable(player, "medkit", 15);
+            case "2" -> buyConsumable(player, "energy drink", 12);
+            case "3" -> buyConsumable(player, "bomb", 20);
+            case "4" -> {
+                if (player.getScraps() < 60) {
+                    yield false;
+                }
+                player.addScraps(-60);
+                addItem("Titan Plating");
+                autoEquipIfPossible("Titan Plating");
+                yield true;
+            }
+            case "5" -> {
+                if (player.getScraps() < 45) {
+                    yield false;
+                }
+                player.addScraps(-45);
+                weaponMod += 2;
+                yield true;
+            }
+            default -> false;
+        };
     }
 
-    public void showInventory() {
-        System.out.println("\n\u001B[36m=== INVENTORY ===\u001B[0m");
-        System.out.println("Weapon: " + weapon + " (ATK +" + weaponBonus() + ")");
-        System.out.println("Armor : " + armor + " (DEF +" + armorBonus() + ")");
-        System.out.println("Bag items: " + (bag.isEmpty() ? "none" : String.join(", ", bag)));
-        System.out.println("Consumables:");
-        consumables.forEach((k, v) -> System.out.println("- " + k + " x" + v));
+    private boolean buyConsumable(Player player, String item, int price) {
+        if (player.getScraps() < price) {
+            return false;
+        }
+        player.addScraps(-price);
+        addConsumable(item, 1);
+        return true;
+    }
+
+    public String render() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== INVENTORY ===\n");
+        sb.append("Weapon: ").append(weapon).append(" (ATK +").append(weaponBonus()).append(")\n");
+        sb.append("Armor : ").append(armor).append(" (DEF +").append(armorBonus()).append(")\n");
+        sb.append("Bag   : ").append(bag.isEmpty() ? "none" : String.join(", ", bag)).append("\n");
+        sb.append("Consumables:\n");
+        consumables.forEach((k, v) -> sb.append("- ").append(k).append(" x").append(v).append("\n"));
+        return sb.toString();
     }
 }

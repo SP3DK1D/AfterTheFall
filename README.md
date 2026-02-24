@@ -1,35 +1,47 @@
 # AfterTheFall
 
-A stylized terminal RPG in Java.
+A 2D top-down ASCII RPG in Java (terminal-based).
 
-## Super easy start (double-click)
-After downloading this repo from GitHub as a ZIP and extracting it:
-
+## Quick start (download from GitHub and run)
 - **Windows:** double-click `start-game.bat`
 - **macOS:** double-click `start-game.command`
-  - If macOS blocks it on first launch, run once in Terminal:
-    - `chmod +x start-game.command`
-- **Linux:** run `./start-game.sh` from a terminal
+- **Linux:** run `./start-game.sh`
 
-These launchers compile and start the game automatically.
+## Controls
+- `W A S D` - move on the grid
+- `I` - inventory
+- `M` - map help/legend hint
+- `R` - rest (heal)
+- `Q` - quit
+
+Combat controls:
+- `A` attack
+- `K` skill
+- `I` use item
+- `F` flee
+
+## ASCII legend
+- Player `@`
+- Wall `#`
+- Floor `.`
+- Door `+`
+- Enemy `E`
+- NPC `N`
+- Item `*`
+- Water `~`
+- Empty ` `
 
 ## Project structure
-- `src/` - Java source code (`Main`, `Player`, `Combat`, `Inventory`, `Room`)
-- `start-game.bat` - Windows double-click launcher
-- `start-game.command` - macOS double-click launcher
-- `start-game.sh` - Linux launcher
+- `src/Main.java` entry point
+- `src/Game.java` deterministic game loop (input -> update -> render)
+- `src/WorldMap.java` 2D grid world + entities + collisions/interactions
+- `src/Renderer.java` ASCII renderer + HUD
+- `src/Player.java` stats/progression/objective state
+- `src/Combat.java` turn-based combat system
+- `src/Inventory.java` items/equipment/consumables/shop purchases
+- `src/Enemy.java`, `src/ItemEntity.java`, `src/Npc.java`, `src/Position.java` support entities
 
-## Features
-- Colorized terminal UI for HUD, encounters, and victory moments.
-- ASCII city map command (`map`) with live player location.
-- Side area: **Drone Nest** with extra loot and encounter.
-- Objective tracker (`objective`) and required `Core Stabilizer` for true ending.
-- Rest command (`rest`) for tactical healing.
-- Black market shop with permanent weapon tune-up upgrades.
-- Combat with attack/skill/item/flee choices, enemy intent hints, and crit spikes.
-- XP leveling and scrap currency progression.
-
-## Manual run (without launcher)
+## Manual run
 ```bash
 javac src/*.java
 java src.Main

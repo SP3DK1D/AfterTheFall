@@ -1,56 +1,50 @@
 package src;
 
-import java.util.Random;
 import java.util.Scanner;
 
+/** Turn-based combat (deterministic update order). */
 public class Combat {
-    private final Random random = new Random();
 
-    public boolean fight(Player player, String enemy, Scanner scanner) {
-        int enemyHp = enemyBaseHp(enemy) + random.nextInt(8);
-        int enemyAtk = enemyBaseAtk(enemy);
+    public boolean fight(Player player, Enemy enemy, Scanner scanner) {
+        while (player.isAlive() && enemy.isAlive()) {
+            System.out.println("\n=== COMBAT ===");
+            System.out.println("Enemy: " + enemy.getName() + " | HP: " + enemy.getHp());
+            System.out.println("You  : HP " + player.getHealth() + " | Energy " + player.getEnergy());
+            System.out.println("Actions: [A]ttack, S[K]ill, [I]tem, [F]lee");
+            System.out.print("> ");
 
-        System.out.println("\n\u001B[31m⚔ Encounter: " + enemy.toUpperCase() + " appears!\u001B[0m\n");
-
-        while (player.isAlive() && enemyHp > 0) {
-            String intent = random.nextInt(100) < 30 ? "heavy strike" : "quick slash";
-            System.out.println("You HP " + player.getHealth() + " | Enemy HP " + enemyHp + " | Intent: " + intent);
-            System.out.println("Actions: attack(a), skill(k), item(i), flee(f)");
             String action = scanner.nextLine().trim().toLowerCase();
 
-            if (action.equals("attack") || action.equals("a")) {
-                int damage = player.attackDamage(random);
-                enemyHp -= damage;
-                System.out.println("You hit for " + damage + " damage.");
-            } else if (action.equals("skill") || action.equals("k")) {
-                int damage = player.useSkill(random);
+            if (action.equals("a") || action.equals("attack")) {
+                enemy.takeDamage(player.attackDamage());
+                System.out.println("You attack for " + player.attackDamage() + " damage.");
+            } else if (action.equals("k") || action.equals("skill")) {
+                int damage = player.skillDamage();
                 if (damage <= 0) {
-                    System.out.println("No energy! You fail to cast skill.");
+                    System.out.println("Not enough energy.");
                 } else {
-                    enemyHp -= damage;
-                    System.out.println("Skill blast deals " + damage + " damage!");
+                    enemy.takeDamage(damage);
+                    System.out.println("Skill blast deals " + damage + " damage.");
                 }
-            } else if (action.equals("item") || action.equals("i")) {
-                System.out.println("Use: medkit | energy drink | bomb");
-                String itemChoice = scanner.nextLine().trim().toLowerCase();
-                if (!player.useItem(itemChoice)) {
+            } else if (action.equals("i") || action.equals("item")) {
+                System.out.print("Use item (medkit / energy drink / bomb): ");
+                String item = scanner.nextLine().trim().toLowerCase();
+                if (!player.useItem(item)) {
                     System.out.println("You don't have that item.");
+                } else {
+                    System.out.println("Used " + item + ".");
                 }
-            } else if (action.equals("flee") || action.equals("f")) {
-                if (random.nextInt(100) < 35) {
-                    System.out.println("You escaped!");
-                    return false;
-                }
-                System.out.println("Couldn't escape!");
+            } else if (action.equals("f") || action.equals("flee")) {
+                System.out.println("You escape from combat.");
+                return false;
             } else {
-                System.out.println("You hesitate and lose tempo.");
+                System.out.println("Invalid action.");
             }
 
-            if (enemyHp > 0) {
-                int intentBonus = intent.equals("heavy strike") ? 4 : 0;
-                int incoming = Math.max(1, enemyAtk + random.nextInt(4) + intentBonus - player.getDefense());
+            if (enemy.isAlive()) {
+                int incoming = Math.max(1, enemy.getAttack() - player.getDefense());
                 player.takeDamage(incoming);
-                System.out.println(enemy + " hits you for " + incoming + ".");
+                System.out.println(enemy.getName() + " hits you for " + incoming + ".");
             }
         }
 
@@ -58,30 +52,8 @@ public class Combat {
             return false;
         }
 
-        int xp = 25 + random.nextInt(25);
-        int scraps = 15 + random.nextInt(20);
-        player.winBattle(xp, scraps);
-        System.out.println("Victory! +" + xp + " XP and +" + scraps + " scraps.");
+        player.gainRewards(enemy.getXpReward(), enemy.getScrapReward());
+        System.out.println("Victory! +" + enemy.getXpReward() + " XP, +" + enemy.getScrapReward() + " scraps.");
         return true;
-    }
-
-    private int enemyBaseHp(String enemy) {
-        return switch (enemy) {
-            case "raider champion" -> 65;
-            case "mutant brute" -> 90;
-            case "sentry overmind" -> 105;
-            case "omega abomination" -> 140;
-            default -> 50;
-        };
-    }
-
-    private int enemyBaseAtk(String enemy) {
-        return switch (enemy) {
-            case "raider champion" -> 10;
-            case "mutant brute" -> 14;
-            case "sentry overmind" -> 16;
-            case "omega abomination" -> 19;
-            default -> 8;
-        };
     }
 }
