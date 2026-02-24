@@ -1,130 +1,131 @@
 package src;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.Timer;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 public class Combat {
-    public List<String> encounters;
-    public Map<String, Integer> encounterHealth;
-    public Map<String, Integer> encounterDamage;
-    public Map<String, Integer> encounterDefence;
-    public int playerHealth;
-    public boolean blockNextAttack;
-    public String currentRoom;
 
-    public Combat() {
-        encounters = new ArrayList<>();
-        encounterHealth = new HashMap<>();
-        encounterDamage = new HashMap<>();
-        encounterDefence = new HashMap<>();
-        
-        playerHealth = 100; // players health
-        blockNextAttack = false; // part of the combat system where if the block us successful the next attack will be blocked
-        encounterData(); // idk why i gotta put this here but it works
-    }
-
-    public void encounterData() {
-        // bandit
-        encounters.add("bandit");
-        encounterHealth.put("bandit", 10);
-        encounterDamage.put("bandit", 2);
-        encounterDefence.put("bandit", 1);
-
-        // mutated bandit
-        encounters.add("zombie");
-        encounterHealth.put("zombie", 20);
-        encounterDamage.put("zombie", 4);
-        encounterDefence.put("zombie", 2);
-
-        // zombie
-        encounters.add("mutated zombie");
-        encounterHealth.put("mutated zombie", 30);
-        encounterDamage.put("mutated zombie", 6);
-        encounterDefence.put("mutated zombie", 3);
-
-        // giant zombie
-        encounters.add("giant zombie");
-        encounterHealth.put("giant zombie", 40);
-        encounterDamage.put("giant zombie", 8);
-        encounterDefence.put("giant zombie", 4);
-       
-        // cave boss zombie
-        encounters.add("cave boss zombie");
-        encounterHealth.put("cave boss zombie", 45);
-        encounterDamage.put("cave boss zombie", 9);
-        
-        // city boss zombie
-        encounters.add("city boss zombie");
-        encounterHealth.put("city boss zombie", 50);
-        encounterDamage.put("city boss zombie", 10);
-        encounterDefence.put("city boss zombie", 5);
-
-        // final boss zombie
-        encounters.add("final boss zombie");
-        encounterHealth.put("final boss zombie", 60);
-        encounterDamage.put("final boss zombie", 12);
-        encounterDefence.put("final boss zombie", 6);
-
-    }
-
-    public void checkRoomForEncounter(String roomEncounter) {
-        if (encounters.contains(roomEncounter)) {
-            System.out.println("\n*** You have encountered a " + roomEncounter + "! ***\n");
-            startCombat(roomEncounter);
-        }
-    }
-
-    private void startCombat(String encounter) {
-        Integer encounterHP = encounterHealth.get(encounter);
-        if (encounterHP == null) {
-            System.out.println("Error: Encounter health not found for " + encounter);
-            return;
-        }
-        Scanner scanner = new Scanner(System.in);
-        while (playerHealth > 0 && encounterHP > 0) {
-            System.out.println("\n====================================");
-            System.out.println("Player Health: " + playerHealth + " | " + encounter + " Health: " + encounterHP);
-            System.out.println("====================================");
-            System.out.println("Choose your action: (a) Attack (b) Block");
-            System.out.print("> ");
-            String action = scanner.nextLine();
-            if (action.equals("a")) {
-                // Attack logic
-                if (Math.random() > 0.5) {
-                    encounterHP -= 10; // damage
-                    System.out.println(">>> You attacked the " + encounter + " for 10 damage!");
-                } else {
-                    System.out.println(">>> Your attack missed!");
-                }
-            } else if (action.equals("b")) {
-                // Block logic
-                if (Math.random() > 0.5) {
-                    blockNextAttack = true;
-                    System.out.println("\n>>> You successfully blocked the next attack!");
-                } else {
-                    System.out.println("\n>>> Your block failed!");
-                    if (Math.random() > 0.5) {
-                        playerHealth -= encounterDamage.get(encounter);
-                        System.out.println(">>> The " + encounter + " attacked you for " + encounterDamage.get(encounter) + " damage!");
-                    } else {
-                        System.out.println(">>> The " + encounter + "'s attack missed!");
-                    }
-                }
+    public boolean fight(JComponent parent, Player player, Enemy enemy) {
+        while (player.isAlive() && enemy.isAlive()) {
+            int score = timingMiniGame(parent, enemy.getAttack());
+            if (score >= 85) {
+                enemy.takeDamage(player.attackDamage() + 20);
+            } else if (score >= 50) {
+                enemy.takeDamage(player.attackDamage() + 6);
             } else {
-                System.out.println("\nInvalid action. Please choose (a) Attack or (b) Block.");
+                int incoming = Math.max(1, enemy.getAttack() - player.getDefense());
+                player.takeDamage(incoming);
             }
         }
-        if (playerHealth <= 0) {
-            System.out.println("\n*** YOU DIED ***");
-            System.out.println("\n*** FIGHT AGAIN ***");
-            playerHealth = 100; // Reset player health for retry
-            startCombat(encounter); // Restart combat
-        } else if (encounterHP <= 0) {
-            System.out.println("\n*** YOU DEFEATED THE " + encounter.toUpperCase() + " ***");
-            
+        if (!player.isAlive()) {
+            return false;
+        }
+        player.gainRewards(enemy.getXpReward(), enemy.getScrapReward());
+        return true;
+    }
+
+    private int timingMiniGame(JComponent parent, int difficulty) {
+        JDialog dialog = new JDialog();
+        dialog.setModal(true);
+        dialog.setTitle("Strike Timing");
+        dialog.setLayout(new BorderLayout());
+
+        JLabel label = new JLabel("Press SPACE when marker is in the green zone", JLabel.CENTER);
+        label.setFont(new Font("SansSerif", Font.BOLD, 16));
+        dialog.add(label, BorderLayout.NORTH);
+
+        TimingPanel panel = new TimingPanel(difficulty);
+        dialog.add(panel, BorderLayout.CENTER);
+
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("SPACE"), "stop");
+        panel.getActionMap().put("stop", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                panel.stopAndScore();
+                dialog.dispose();
+            }
+        });
+
+        dialog.pack();
+        dialog.setLocationRelativeTo(parent);
+        panel.start();
+        dialog.setVisible(true);
+        panel.stop();
+        return panel.getScore();
+    }
+
+    private static class TimingPanel extends JPanel {
+        private int marker = 0;
+        private int dir = 1;
+        private int score = 0;
+        private final int sweetStart;
+        private final int sweetEnd;
+        private final Timer timer;
+
+        TimingPanel(int difficulty) {
+            setPreferredSize(new Dimension(520, 120));
+            int sweetSize = Math.max(18, 90 - difficulty * 4);
+            sweetStart = 220;
+            sweetEnd = sweetStart + sweetSize;
+            timer = new Timer(12, e -> {
+                marker += dir * 6;
+                if (marker <= 0 || marker >= 500) {
+                    dir *= -1;
+                }
+                repaint();
+            });
+        }
+
+        void start() {
+            timer.start();
+        }
+
+        void stop() {
+            timer.stop();
+        }
+
+        void stopAndScore() {
+            int clamped = Math.max(0, Math.min(500, marker));
+            if (clamped >= sweetStart && clamped <= sweetEnd) {
+                score = 100;
+            } else {
+                int dist = Math.min(Math.abs(clamped - sweetStart), Math.abs(clamped - sweetEnd));
+                score = Math.max(0, 100 - dist / 3);
+            }
+        }
+
+        int getScore() {
+            return score;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            g2.setColor(new Color(20, 24, 30));
+            g2.fillRect(0, 0, getWidth(), getHeight());
+
+            g2.setColor(new Color(30, 180, 120));
+            g2.fillRoundRect(sweetStart, 45, sweetEnd - sweetStart, 24, 8, 8);
+
+            g2.setColor(new Color(200, 200, 200));
+            g2.drawRoundRect(10, 45, 500, 24, 8, 8);
+
+            g2.setColor(new Color(250, 80, 80));
+            g2.fillOval(10 + marker - 8, 40, 16, 34);
         }
     }
 }
