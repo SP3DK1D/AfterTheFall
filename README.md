@@ -1,6 +1,13 @@
 # AfterTheFall
 
-2D top-down ASCII RPG in the terminal.
+AfterTheFall is now a **desktop 2D action-RPG** built with Java Swing (not terminal ASCII mode).
+
+## What changed
+- Real-time movement with smooth rendering in a game window.
+- Tile-based world with camera, lighting-inspired colors, and a side HUD.
+- Procedural map generation with seed support.
+- Enemy AI (chase behavior), loot, trader/shop, leveling, and scraps economy.
+- Working timing-based combat mini-game in a pop-up battle panel.
 
 ## Run
 ```bash
@@ -8,31 +15,17 @@ javac src/*.java
 java src.Main
 ```
 
-### Optional flags
-- `--seed 12345` reproducible procedural map
-- `--instant` try real-time single-key mode (default)
-- `--enter` force line/Enter mode fallback
-
-Example:
+Optional seed:
 ```bash
-java src.Main --seed 42 --enter
+java src.Main --seed 12345
 ```
 
 ## Controls
-- Movement: `W A S D`
+- `W A S D` move
 - `I` inventory
 - `R` rest
-- `` ` `` toggle debug overlay
 - `Q` quit
 
-Combat mini-game:
-- Timing bar, press Space in sweet spot for best damage.
-
-## Features
-- Procedural rooms+corridors world with seed support
-- Camera/viewport rendering (60x25) on larger map
-- Layered renderer (terrain + entities + effects flash)
-- Enemy chase/wander AI with detection radius
-- Clear-all-enemies win condition
-- ANSI in-place redraw with newline fallback
-- Instant input mode with safe Enter mode fallback
+## Notes
+- A graphical desktop environment is required (X11/Wayland on Linux, standard desktop on macOS/Windows).
+- If launched in a headless shell, the game prints a friendly message and exits.
